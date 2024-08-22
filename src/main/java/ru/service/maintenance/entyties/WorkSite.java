@@ -15,8 +15,8 @@ public class WorkSite {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "id_district")
-    private Long id_district;
+    @Column(name = "id_street")
+    private Long id_street;
 
     @Column(name = "house")
     private Long house;

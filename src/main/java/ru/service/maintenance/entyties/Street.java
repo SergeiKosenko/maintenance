@@ -20,6 +20,6 @@ public class Street {
     private Long id_district;
 
     @Column(name = "street")
-    private String frame;
+    private String street;
 
 }

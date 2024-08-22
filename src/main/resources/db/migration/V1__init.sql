@@ -1,7 +1,7 @@
 create table region
 (
-    id          bigserial primary key,
-    region      varchar(255)
+    id     bigserial primary key,
+    region varchar(255)
 );
 insert into region (region)
 values ('Тюмень'),
@@ -9,9 +9,9 @@ values ('Тюмень'),
 
 create table district
 (
-    id          bigserial primary key,
+    id        bigserial primary key,
     id_region int          default 1,
-    district      varchar(255) default ''
+    district  varchar(255) default ''
 );
 insert into district (id_region, district)
 values (1, 'Ленинский'),
@@ -25,16 +25,20 @@ create table streets
 );
 insert into streets (id_district, street)
 values (1, 'Федюнинского'),
-       (1, 'Мельникайте');
+       (1, 'Мельникайте'),
+       (1, 'Червишевский тракт');
 
-create table work_objecteets
+create table work_site
 (
-    id        bigserial primary key,
-    id_street int,
-    house     int,
-    frame     varchar(10) default ''
+    id             bigserial primary key,
+    id_street      int,
+    id_manufacture int,
+    house          int,
+    frame          varchar(10) default ''
 );
-insert into work_objecteets (id_street, house, frame)
-values (1, 108, 'Г'),
-       (2, 122, '');
+insert into work_site (id_street, id_manufacture, house, frame)
+values (1, 1, 108, 'Г'),
+       (2, 1, 122, ''),
+       (3, 1, 23, ''),
+       (3, 2, 23, '');
 
