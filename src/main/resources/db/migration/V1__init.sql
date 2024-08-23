@@ -1,26 +1,26 @@
-create table region
+create table regions
 (
     id     bigserial primary key,
     region varchar(255)
 );
-insert into region (region)
+insert into regions (region)
 values ('Тюмень'),
        ('Тобольск');
 
-create table district
+create table districts
 (
     id        bigserial primary key,
-    id_region int          default 1,
+    id_region bigint  references regions (id),
     district  varchar(255) default ''
 );
-insert into district (id_region, district)
+insert into districts (id_region, district)
 values (1, 'Ленинский'),
        (1, 'Калининский');
 
 create table streets
 (
     id          bigserial primary key,
-    id_district int          default 1,
+    id_district bigint  references districts (id),
     street      varchar(255) default ''
 );
 insert into streets (id_district, street)
@@ -28,17 +28,32 @@ values (1, 'Федюнинского'),
        (1, 'Мельникайте'),
        (1, 'Червишевский тракт');
 
-create table work_site
+create table manufactures
 (
     id             bigserial primary key,
-    id_street      int,
-    id_manufacture int,
-    house          int,
-    frame          varchar(10) default ''
+    title          varchar(255),
+    firm          varchar(255),
+    uri            varchar(255) default '/img/1.web'
 );
-insert into work_site (id_street, id_manufacture, house, frame)
-values (1, 1, 108, 'Г'),
-       (2, 1, 122, ''),
-       (3, 1, 23, ''),
-       (3, 2, 23, '');
+
+insert into manufactures (title, firm, uri) values
+    ('Монетка', '"ООО Элемент Трейд"', './img/1.jpg'),
+    ('Сельский Дворик', '"ИП Армян А.А"', './img/2.jpg');                                               );
+
+create table work_sites
+(
+    id             bigserial primary key,
+    id_manufacture bigint references manufactures (id),
+    id_street      bigint references streets (id),
+    house          bigint,
+    frame          varchar(255) default '',
+    created_at  timestamp default current_timestamp,
+    updated_at  timestamp default current_timestamp,
+    comment          varchar(255)
+);
+
+insert into work_sites (id_manufacture, id_street, house, frame) values
+    (
+        1, 1, 34, ''
+    );
 
