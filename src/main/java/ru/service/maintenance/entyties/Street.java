@@ -22,4 +22,5 @@ public class Street {
     @Column(name = "street")
     private String street;
 
+
 }
