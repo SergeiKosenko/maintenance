@@ -23,7 +23,7 @@ public class District {
 
     @ManyToOne
     @JoinColumn(name = "region_id")
-    private Region region;
+    private Regiones regiones;
 
     @Column(name = "created_at")
     @CreationTimestamp
