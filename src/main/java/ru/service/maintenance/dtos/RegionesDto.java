@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class StreetDto {
+public class RegionesDto {
     private Long id;
     private String title;
-    private String districtTitle;
-    private String regionesTitle;
 }

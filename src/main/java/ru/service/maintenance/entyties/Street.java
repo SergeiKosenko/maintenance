@@ -16,11 +16,12 @@ public class Street {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "id_district")
-    private Long id_district;
+    @ManyToOne
+    @JoinColumn(name = "id_district")
+    private District district;
 
-    @Column(name = "street")
-    private String street;
+    @Column(name = "title")
+    private String title;
 
 
 }

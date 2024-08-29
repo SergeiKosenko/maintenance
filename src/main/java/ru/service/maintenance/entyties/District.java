@@ -1,5 +1,6 @@
 package ru.service.maintenance.entyties;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,10 +8,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "districts")
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class District {
     @Id
@@ -20,6 +23,9 @@ public class District {
 
     @Column(name = "title")
     private String title;
+
+    @OneToMany(mappedBy = "regiones")
+    private List<District> streets;
 
     @ManyToOne
     @JoinColumn(name = "region_id")

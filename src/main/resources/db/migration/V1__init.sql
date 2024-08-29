@@ -1,37 +1,43 @@
-create table regions
+create table regiones
 (
     id     bigserial primary key,
     title varchar(255),
     created_at  timestamp default current_timestamp,
     updated_at  timestamp default current_timestamp
 );
-insert into regions (title)
+insert into regiones (title)
 values ('Тюмень'),
        ('Тобольск');
 
 create table districts
 (
     id        bigserial primary key,
-    region_id bigint  references regions (id),
+    region_id bigint  references regiones (id),
     title  varchar(255) default '',
     created_at  timestamp default current_timestamp,
     updated_at  timestamp default current_timestamp
 );
 insert into districts (region_id, title)
 values (1, 'Ленинский'),
+       (2, 'Тобольский'),
+       (2, 'Затобольский'),
        (1, 'Калининский');
 
 create table streets
 (
     id          bigserial primary key,
     id_district bigint  references districts (id),
-    street      varchar(255) default '',
+    title      varchar(255) default '',
     created_at  timestamp default current_timestamp,
     updated_at  timestamp default current_timestamp
 );
-insert into streets (id_district, street)
+insert into streets (id_district, title)
 values (1, 'Федюнинского'),
+       (4, 'Лермонтова'),
+       (3, 'Кликайте'),
        (1, 'Мельникайте'),
+       (2, 'Урицкого'),
+       (3, 'Ломоносова'),
        (1, 'Червишевский тракт');
 
 create table manufactures
