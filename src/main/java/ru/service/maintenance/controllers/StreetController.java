@@ -10,6 +10,7 @@ import ru.service.maintenance.dtos.DistrictDto;
 import ru.service.maintenance.dtos.StreetDto;
 import ru.service.maintenance.entyties.District;
 import ru.service.maintenance.entyties.Street;
+import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.services.StreetService;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class StreetController {
     private final StreetService streetService;
     private final StreetConverter streetConverter;
+
     @GetMapping
     public List<StreetDto> getAllStreets() {
         return streetService.findAll().stream().map(streetConverter::entityToDto).collect(Collectors.toList());
@@ -28,7 +30,6 @@ public class StreetController {
 
     @GetMapping("/{id}")
     public StreetDto getStreetById(@PathVariable Long id){
-        Street p = streetService.FindById(id).get();
-        return streetConverter.entityToDto(p);
+        return streetConverter.entityToDto(streetService.FindById(id).orElseThrow(() -> new ResourceNotFoundException("Улица с ID: " +id+ " не найдена")));
     }
 }

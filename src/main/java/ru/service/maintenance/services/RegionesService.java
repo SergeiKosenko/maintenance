@@ -33,4 +33,6 @@ public class RegionesService {
     public Collection<Regiones> findAll() {
         return regionesRepository.findAll();
     }
+
+
 }

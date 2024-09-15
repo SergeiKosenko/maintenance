@@ -23,20 +23,35 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <td>ID</td>
+            <!--            <td>ID</td>-->
+            <td>Регион</td>
+            <td>Район</td>
             <td>Улица</td>
-            <td>Дом</td>
-            <td>Корпус</td>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="p in streets">
-            <td>{{p}}</td>
+            <td>
+                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Регион">
+                <datalist id="datalistOptions">
+                    <option value={{p.regionesTitle}}>
+                    <option value={{p.regionesTitle}}>
+                    <option value={{p.regionesTitle}}>
+                    <option value={{p.regionesTitle}}>
+                    <option value={{p.regionesTitle}}>
+                </datalist>
+            </td>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <td>{{p.regionesTitle}}</td>
+            <td>{{p.districtTitle}}</td>
             <td>{{p.title}}</td>
-            <td>{{p.house}}</td>
-            <td>{{p.frame}}</td>
-            <td>{{p.id_district}}</td>
-            <td>{{p.street}}</td>
+            <!--            <td>{{p.id_district}}</td>-->
+            <!--            <td>{{p.street}}</td>-->
             <td>
                 <button class="btn btn-danger" ng-click="deleteStreet(p.id)">Удалить</button>
             </td>

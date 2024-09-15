@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.service.maintenance.converters.DistrictConverter;
 import ru.service.maintenance.dtos.DistrictDto;
 import ru.service.maintenance.entyties.District;
+import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.services.DistrictService;
 
 import java.util.List;
@@ -27,7 +28,6 @@ public class DistrictController {
 
     @GetMapping("/{id}")
     public DistrictDto getDistrictById(@PathVariable Long id){
-        District p = districtService.FindById(id).get();
-        return districtConverter.entityToDto(p);
+        return districtConverter.entityToDto(districtService.FindById(id).orElseThrow(() -> new ResourceNotFoundException("Район с ID: " +id+ " не найден")));
     }
 }
