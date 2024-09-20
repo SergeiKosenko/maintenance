@@ -31,21 +31,21 @@
         </thead>
         <tbody>
         <tr ng-repeat="p in streets">
-            <td>
-                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Регион">
-                <datalist id="datalistOptions">
-                    <option value={{p.regionesTitle}}>
-                    <option value={{p.regionesTitle}}>
-                    <option value={{p.regionesTitle}}>
-                    <option value={{p.regionesTitle}}>
-                    <option value={{p.regionesTitle}}>
-                </datalist>
-            </td>
+<!--            <td>-->
+<!--                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Регион">-->
+<!--                <datalist id="datalistOptions">-->
+<!--                    <option value='p.regionesTitle'>-->
+<!--                    <option value={{p.regionesTitle}}>-->
+<!--                    <option value={{p.regionesTitle}}>-->
+<!--                    <option value={{p.regionesTitle}}>-->
+<!--                    <option value={{p.regionesTitle}}>-->
+<!--                </datalist>-->
+<!--            </td>-->
             <select class="form-select" aria-label="Default select example">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option selected>Выбать регион</option>
+                <option value="1">{{p.regionesTitle}}</option>
+                <option value="2">{{p.regionesTitle}}</option>
+                <option value="3">{{p.regionesTitle}}</option>
             </select>
             <td>{{p.regionesTitle}}</td>
             <td>{{p.districtTitle}}</td>
