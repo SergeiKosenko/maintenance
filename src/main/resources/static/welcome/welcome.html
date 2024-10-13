@@ -1,0 +1,160 @@
+<div class="jumbotron jumbotron-main" id="home">
+    <div id="particles-js" class="container_slider_css">
+
+        <img class="photo_slider_css" src="img/banner_top3_3.png" alt="">
+        <img class="photo_slider_css" src="img/banner_top3_2.png" alt="">
+        <img class="photo_slider_css" src="img/banner_top3_1.png" alt="">
+        <img class="photo_slider_css" src="img/banner_top3_0.png" alt="">
+        <img class="photo_slider_css" src="img/banner_top3.png" alt="">
+        <canvas class="particles-js-canvas-el" height="450"></canvas>
+
+    </div>
+    <div class="container center-vertically-holder">
+        <div class="center-vertically">
+            <div class="col-sm-8 col-sm-offset-2 col-lg-5 col-lg-offset-3 text-center">
+                <h1 class="scaleReveal" data-sr-id="46">
+                    Сервис автоматизации, <strong>управление, мониторинг и техническое обслуживание объектов</strong>
+                </h1>
+                <a href="#!/sensor" class="button button-primary">К списку объектов</a>
+                <hr class="line" data-sr-id="1">
+                <p class="bottomReveal" data-sr-id="2">
+                    После регистрации получаем доступ к к техническому обслуживанию</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section id="content">
+    <div class="container">
+<p></p>
+<h1>Техническое обслуживание</h1>
+<p></p>
+<tr>
+
+    <select class="form-select" name="selection" >
+        <option selected>Выбать регион</option>
+        <option ng-repeat="pi in regiones" value="{{pi.id}}">{{pi.id}}</option>
+    </select>
+
+</tr>
+<h3>Список объектов техобслуживания </h3>
+<p></p>
+
+<td>{{p.regionesTitle}}</td>
+<table class="table table-hover">
+    <thead>
+
+    <tr>
+        <!--            <td>ID</td>-->
+        <td>Регион</td>
+        <td>Район</td>
+        <td>Улица</td>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr ng-repeat="p in streets">
+        <!--            <td>-->
+        <!--                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Регион">-->
+        <!--                <datalist id="datalistOptions">-->
+        <!--                    <option value='p.regionesTitle'>-->
+        <!--                    <option value={{p.regionesTitle}}>-->
+        <!--                    <option value={{p.regionesTitle}}>-->
+        <!--                    <option value={{p.regionesTitle}}>-->
+        <!--                    <option value={{p.regionesTitle}}>-->
+        <!--                </datalist>-->
+        <!--            </td>-->
+
+        <td>{{p.regionesTitle}}</td>
+        <td>{{p.districtTitle}}</td>
+        <td>{{p.title}}</td>
+
+        <td>
+            <button class="btn btn-danger" ng-click="deleteStreet(p.id)">Удалить</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p></p>
+<h3>Добавить объект</h3>
+<p></p>
+<form class="row g-3" ng-submit="createNewStreet()">
+    <div class="col-auto">
+        <input type="text" class="form-control" id="newStreetTitle" ng-model="newProduct.title" placeholder="Улица">
+    </div>
+    <div class="col-auto">
+        <input type="number" class="form-control" id="newStreetHouse" ng-model="newStreet.house" placeholder="Дом">
+    </div>
+    <div class="col-auto">
+        <input type="text" class="form-control" id="newStreetFrame" ng-model="newStreet.frame" placeholder="Корпус">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-3">Создать</button>
+    </div>
+</form>
+    </div>
+</section>
+
+
+
+<!--<section id="content">-->
+<!--    <div class="container">-->
+<!--        <h1 class="main-top">Категории приборов</h1>-->
+<!--        <div class="wrap" ng-repeat="c in Category.content">-->
+<!--            <div class="bblock center-content homepage-shops" >-->
+<!--                <img srcset="{{c.pathname}}" alt="{{c.title}}"  src=""  align="center" width="100%">-->
+<!--                <h3 class="main-top-lit" align="center">{{c.title}}</h3>-->
+<!--                <p class="product-text" align="center">{{c.description}}</p>-->
+<!--                <p  align="center">-->
+<!--                    <button class="button_lit1 button_primary_lit" ng-click="showProductsByCategory(c.id)">-->
+<!--                        Посмотреть датчики-->
+<!--                    </button>-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<div class="wrap"><hr class="line"></div>
+<section id="content_1">
+    <div class="container">
+        <div class="wrap">
+            <div class="bblock2 center-content homepage-shops">
+                <img src="img/klients.png" width="150" >
+                <p><b>ДЛЯ КЛИЕНТОВ</b><br> Наши клиенты – в центре всего, что мы делаем,
+                    Доверие - это главное. Мы строим долгосрочные отношения, стремимся быть
+                    экспертами, открыты для предложений и улучшений нашей работы. </p>
+            </div>
+            <div class="bblock2 center-content homepage-shops">
+                <img src="img/partners.png" width="150">
+                <p><b>ДЛЯ ПАРТНЕРОВ</b><br>
+                    Прозрачность - основа совместного бизнеса.
+                    Работаем, соблюдая этику бизнеса,
+                    уважаем другие мнения и интересы,
+                    выполняем обязательства и берем ответственность за свои решения.
+                    Нетерпимы к коррупции. </p>
+            </div>
+            <div class="bblock2 center-content homepage-shops">
+                <img src="img/staff.png" width="150" style="align-items: center">
+                <p><b>ДЛЯ СОТРУДНИКОВ</b><br>
+                    Collection of sensor data - территория личной и коллективной самореализации.
+                    Мы - одна команда, ценим интересы друг друга,
+                    свободу и ответственность. </p>
+            </div>
+        </div>
+
+        <div class="row homepage-shops-block">
+            <div class="col-12 center-content homepage-shops">
+<!--                <p> <img src="img/ms-icon-144x144.png" width="144" class="img_brand">-->
+                    Collection of sensor data осуществляет свою деятельность с 1993 года и является первой на российском рынке сетью,
+                    реализовавшей полноценный омниканальный подход к продажам — это единый ассортимент, цена и сервис как при покупке в магазинах,
+                    так и онлайн. Ритейлер предлагает своим покупателям несколько десятков тысяч наименований аудио/видео и цифровой техники,
+                    мелкой и крупной бытовой техники, медиатоваров, а также аксессуаров. Магазины «Collection of sensor data» имеют единый формат и специальную концепцию дизайна.
+                    Помимо эффективного формата розничной торговли и ориентированной на покупателя концепции магазина
+                    компания предлагает клиентам высококлассную сервисную поддержку под брендом «Collection of sensor data».
+
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

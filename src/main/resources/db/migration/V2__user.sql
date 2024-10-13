@@ -9,14 +9,14 @@ create table roles
 create table users
 (
     id             bigserial primary key,
-    username          varchar(255) not null,
+    username       varchar(255) not null,
     password       varchar(255) not null,
     first_name     varchar(255) ,
     last_name      varchar(255) ,
     email          varchar(255) not null,
     phone          varchar(255) ,
     active         boolean default false,
-    id_region      bigint,
+    region_id      bigint  references regiones (id),
     created_at     timestamp default current_timestamp,
     updated_at     timestamp default current_timestamp
 );
@@ -35,7 +35,7 @@ insert into roles (name) values
                              ('ROLE_ADMIN'),
                              ('ROLE_SUPER_ADMIN');
 
-insert into users (username, password, last_name, first_name, email, phone, active, id_region) values
+insert into users (username, password, last_name, first_name, email, phone, active, region_id) values
     ( 'superAdmin', '$2a$12$S.ZayaZTqvfFfZCqaxF1G.lO5wONMdUtLk21jwAinC8HLl.HLnCWO', 'Иванов', 'Иван', 'superadmin@mail.ru', '8 (999)-989-77-22', true, 1 ),
     ( 'admin', '$2a$12$S.ZayaZTqvfFfZCqaxF1G.lO5wONMdUtLk21jwAinC8HLl.HLnCWO', 'Петров', 'Петр', 'admin@mail.ru', '8 (999)-989-77-33', true, 1 ),
     ( 'user', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Сидоров', 'Василий', 'user@mail.ru', '8 (999)-989-77-11', true, 1 );

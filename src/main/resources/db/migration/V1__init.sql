@@ -7,6 +7,7 @@ create table regiones
 );
 insert into regiones (title)
 values ('Тюмень'),
+       ('Екатеринбург'),
        ('Тобольск');
 
 create table districts

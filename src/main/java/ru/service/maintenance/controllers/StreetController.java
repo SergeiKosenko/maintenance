@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.service.maintenance.converters.StreetConverter;
-import ru.service.maintenance.dtos.DistrictDto;
 import ru.service.maintenance.dtos.StreetDto;
-import ru.service.maintenance.entyties.District;
-import ru.service.maintenance.entyties.Street;
 import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.services.StreetService;
 

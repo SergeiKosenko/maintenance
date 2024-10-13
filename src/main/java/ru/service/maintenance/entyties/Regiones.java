@@ -26,6 +26,9 @@ public class Regiones {
     private String title;
 
     @OneToMany(mappedBy = "regiones")
+    private List<User> users;
+
+    @OneToMany(mappedBy = "regiones")
     private List<District> districts;
 
     @Column(name = "created_at")

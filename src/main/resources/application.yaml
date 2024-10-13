@@ -2,6 +2,7 @@ server:
   port: 8188
   servlet:
     context-path: /maintenance
+location: img
 spring:
   datasource:
     driver-class-name: org.h2.Driver
