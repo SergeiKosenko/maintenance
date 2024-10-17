@@ -8,19 +8,19 @@ angular.module('maintenance').controller('regController', function ($rootScope, 
     };
 
 
-    const contextPath = 'http://localhost:8188/maintenance/';
+    const contextPath = 'http://localhost:8188/maintenance/api/v1/users/';
 
-    $scope.newUser = {region_id: '', lastName: '', firstName: '', phone: '',userName: '', password: '', email: '', passwordConfirm: ''};
+    $scope.newUser = {regionesTitle: '', lastName: '', firstName: '', phone: '',username: '', password: '', email: '', passwordConfirm: ''};
 
     $scope.tryToReg = function () {
 
-        $http.post(contextPath + 'newuser', $scope.newUser)
+        $http.post(contextPath + 'register', $scope.newUser)
             .then(function successCallback(response) {
 
                 $scope.newUser.lastName = null;
                 $scope.newUser.firstName = null;
-                $scope.newUser.userName = null;
-                $scope.newUser.region_id = null;
+                $scope.newUser.username = null;
+                $scope.newUser.regionesTitle = null;
                 $scope.newUser.email = null;
                 $scope.newUser.phone = null;
                 $scope.newUser.password = null;

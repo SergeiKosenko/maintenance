@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UsersDto {
+public class RegisterUserDto {
     private Long id;
     private String username;
     private String password;
@@ -15,5 +15,4 @@ public class UsersDto {
     private String phone;
     private String regionesTitle;
     private boolean active;
-
 }

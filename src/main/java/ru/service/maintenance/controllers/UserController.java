@@ -8,6 +8,7 @@ import ru.service.maintenance.converters.UserConverter;
 import ru.service.maintenance.dtos.UsersDto;
 import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.repositories.RegionesRepository;
+import ru.service.maintenance.services.RoleService;
 import ru.service.maintenance.services.UserService;
 
 import java.util.List;
@@ -19,11 +20,13 @@ public class UserController {
     private final UserService userService;
     private final UserConverter userConverter;
     private final RegionesRepository regionesRepository;
+    private final RoleService roleService;
 
-    public UserController(UserService userService, UserConverter userConverter, RegionesRepository regionesRepository) {
+    public UserController(UserService userService, UserConverter userConverter, RegionesRepository regionesRepository, RoleService roleService) {
         this.userService = userService;
         this.userConverter = userConverter;
         this.regionesRepository = regionesRepository;
+        this.roleService = roleService;
     }
 
     @GetMapping()
@@ -38,11 +41,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UsersDto getUsersById(@PathVariable Long id) {
-//        Optional<Regiones> p = regionesService.FindById(id);
-//        if (p.isPresent()){
-//            return new ResponseEntity<>(regionesConverter.entityToDto(p.get()), HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(new AppError("123","Регион с ID: + " +id+ "не найден"), HttpStatus.NOT_FOUND);
         return userConverter.entityToDto(userService.FindById(id).orElseThrow(() -> new ResourceNotFoundException("Пользователь с ID: " +id+ " не найден")));
     }
 }

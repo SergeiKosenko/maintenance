@@ -8,6 +8,7 @@ import ru.service.maintenance.entyties.User;
 public class UserConverter {
     public UsersDto entityToDto(User p) {
         UsersDto usersDto = new UsersDto();
+
         usersDto.setId(p.getId());
         usersDto.setUsername(p.getUsername());
         usersDto.setFirstName(p.getFirstName());
@@ -16,6 +17,7 @@ public class UserConverter {
         usersDto.setEmail(p.getEmail());
         usersDto.setRegionesTitle(p.getRegiones().getTitle());
         usersDto.setActive(p.isActive());
+        usersDto.setPassword(p.getPassword());
         return usersDto;
     }
 }

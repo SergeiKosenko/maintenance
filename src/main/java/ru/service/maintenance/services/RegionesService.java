@@ -22,6 +22,8 @@ public class RegionesService {
 
     public Optional<Regiones> FindById(Long id) {return regionesRepository.findById(id);}
 
+    public Optional<Regiones> FindByTitle(String title) {return regionesRepository.findByTitle(title);}
+
     public void deleteById(Long id) { regionesRepository.deleteById(id); }
 
     public void createNewRegiones(RegionesDto regionesDto) {

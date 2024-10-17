@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.service.maintenance.converters.DistrictConverter;
 import ru.service.maintenance.dtos.DistrictDto;
-import ru.service.maintenance.entyties.District;
 import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.services.DistrictService;
 
