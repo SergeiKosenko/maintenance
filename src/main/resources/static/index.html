@@ -47,52 +47,24 @@
                         <li>
                             <a href="#!/contacts" class="nav-item nav-link">Контакты</a>
                         </li>
+                        <li ng-show="isUserHasUserRole()">
+                            <a href="#!/profile" class="nav-item nav-link">Профиль</a>
+                        </li>
                         <li ng-show="isUserHasAdminRole()">
                             <a href="#!/admin" class="nav-item nav-link">Админпанель</a>
                         </li>
-                        <!--                        <li ng-show="isUserHasManagerRole()">-->
-                        <!--                            <a href="#!/admin" class="nav-item nav-link">Управление заказами</a>-->
-                        <!--                        </li>-->
-                                                <li ng-show="!isUserLoggedIn()">
-                                                    <a href="#!/auth" class="button_lit button_primary_lit">Авторизация</a>
-                                                </li>
-                        <!--                        <li ng-show="isUserLoggedIn()">-->
-                        <!--                            <button class="button_lit1 button_primary_lit1" ng-click="tryToLogout()">Выйти</button>-->
-                        <!--                        </li>-->
-                        <!--                        <li class="nav-item" ng-show="isUserLoggedIn()">-->
-                        <!--                            <span class="navbar-brand">{{currentUserName}}</span>-->
-                        <!--                        </li>-->
-
-                        <!--                                        <li class="nav-item">-->
-
-                        <!--                                            <select class="form-select"  >-->
-                        <!--                                                <option selected>Выбать регион</option>-->
-                        <!--                                                <option ng-repeat="pi in regiones" value="{{pi.id}}">{{pi.title}}</option>-->
-                        <!--                                            </select>-->
-                        <!--                                        </li>-->
-
-<!--                        <li class="nav-item" ng-show="!isUserLoggedIn()">-->
-<!--                            <form class="row g-3" ng-submit="tryToAuth()">-->
-<!--                                <div class="input-group mb-3">-->
-<!--                                    <div class="login" >-->
-<!--                                        <input id="navLoginField" class="form-control" ng-model="user.username" type="text">-->
-<!--                                    </div>-->
-<!--                                    <div class="login" >-->
-<!--                                        <input id="navPasswordField" class="form-control" ng-model="user.password" type="password">-->
-<!--                                    </div>-->
-<!--                                    <div>-->
-<!--                                        <button id="navLoginSubmit" class="button_lit button_primary_lit" type="submit">-->
-<!--                                            Войти-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </form>-->
-<!--                        </li>-->
+                        <li ng-show="isUserHasSuperAdminRole()">
+                            <a href="#!/admin" class="nav-item nav-link">СуперАдмин</a>
+                        </li>
+                        <li ng-show="!isUserLoggedIn()">
+                            <a href="#!/auth" class="button_lit button_primary_lit">Авторизация</a>
+                        </li>
+                        <li class="nav-item" ng-show="isUserLoggedIn()">
+                            <span class="navbar-brand">{{currentUserName}}</span>
+                        </li>
                         <li ng-show="isUserLoggedIn()">
                             <button class="button_lit1 button_primary_lit1" ng-click="tryToLogout()">Выйти</button>
                         </li>
-
-
                     </ul>
                 </div>
             </div>

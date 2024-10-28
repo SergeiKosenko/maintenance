@@ -1,11 +1,10 @@
 package ru.service.maintenance.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 import ru.service.maintenance.converters.UserConverter;
 import ru.service.maintenance.dtos.UsersDto;
+import ru.service.maintenance.entyties.User;
 import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.repositories.RegionesRepository;
 import ru.service.maintenance.services.RoleService;
@@ -29,18 +28,42 @@ public class UserController {
         this.roleService = roleService;
     }
 
+//    @GetMapping
+//    public Page<User> searchUsers(@RequestParam(name = "p", defaultValue = "1") Integer page,
+//                                  @RequestParam(name = "page_size", defaultValue = "9") Integer pageSize) {
+//        if (page < 1) {
+//            page = 1;
+//        }
+//        return userService.searchUsers(page, pageSize);
+//    }
+
     @GetMapping()
     public List<UsersDto> getAllUsers() {
-        return userService.FindAll().stream().map(userConverter::entityToDto).collect(Collectors.toList());
+        return userService.findAll().stream().map(userConverter::entityToDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/all/{idRegiones}")
-    public List<UsersDto> getAllUsersIdRegiones(@PathVariable Long idRegiones) {
-        return userService.FindAll().stream().filter(p -> p.equals(idRegiones)).map(userConverter::entityToDto).collect(Collectors.toList());
-    }
+//    @GetMapping("/all/{idRegiones}")
+//    public List<UsersDto> getAllUsersIdRegiones(@PathVariable Long idRegiones) {
+//        return userService.findAll().stream().filter(p -> p.equals(idRegiones)).map(userConverter::entityToDto).collect(Collectors.toList());
+//    }
 
     @GetMapping("/{id}")
     public UsersDto getUsersById(@PathVariable Long id) {
         return userConverter.entityToDto(userService.FindById(id).orElseThrow(() -> new ResourceNotFoundException("Пользователь с ID: " +id+ " не найден")));
+    }
+
+    @GetMapping("/roles")
+    public List<String> getAllRoleNames() {
+        return roleService.findAllRoleNames();
+    }
+
+    @PatchMapping("/roles/{id}")
+    public void changeRole(@RequestParam String roleName, @PathVariable Long id) {
+        userService.changeRole(roleName, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        userService.deleteById(id);
     }
 }

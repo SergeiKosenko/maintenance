@@ -17,17 +17,17 @@ angular.module('maintenance').controller('authController', function ($rootScope,
             });
     };
 
-    $rootScope.tryToLogout = function () {
-        $rootScope.listRoles.clear();
-        $scope.clearUser();
-        $scope.user = null;
-        $location.path('/');
-    };
-
-    $scope.clearUser = function () {
-        delete $localStorage.maintenanceUser;
-        $http.defaults.headers.common.Authorization = '';
-    };
+    // $rootScope.tryToLogout = function () {
+    //     $rootScope.listRoles.clear();
+    //     $scope.clearUser();
+    //     $scope.user = null;
+    //     $location.path('/');
+    // };
+    //
+    // $scope.clearUser = function () {
+    //     delete $localStorage.maintenanceUser;
+    //     $http.defaults.headers.common.Authorization = '';
+    // };
 
     $rootScope.isUserLoggedIn = function () {
         return !!$localStorage.maintenanceUser;

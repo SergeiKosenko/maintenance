@@ -1,6 +1,8 @@
 package ru.service.maintenance.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.service.maintenance.dtos.UsersDto;
 import ru.service.maintenance.entyties.Role;
 import ru.service.maintenance.entyties.User;
+import ru.service.maintenance.exceptions.InvalidParamsException;
+import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.repositories.RoleRepository;
 import ru.service.maintenance.repositories.UserRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,6 +35,10 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public Page<User> searchUsers(Integer page, Integer pageSize) {
+        return userRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
 
     @Override
@@ -51,7 +60,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(IdRegion);
     }
 
-    public Collection<User> FindAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
@@ -65,9 +74,39 @@ public class UserService implements UserDetailsService {
         user.setPassword(bcryptCachedPassword);
         user.setEmail(usersDto.getEmail());
         user.setPhone(usersDto.getPhone());
-        user.setRoles(Set.of(roleRepository.findByName("ROLE_USER")));
+        user.setRoles((Set<Role>) roleRepository.findByName("ROLE_USER"));
         user.setRegiones(regionesService.FindByTitle(usersDto.getRegionesTitle()).get());
 
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void changeRole(String roleName, Long userId) {
+        if (roleName == null || userId == null) {
+            throw new InvalidParamsException("Невалидные параметры");
+        }
+        Long roleId;
+        try {
+            roleId = roleRepository.findByName(roleName).getId();
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Ошибка поиска роли. Роль " + roleName + "не существует");
+        }
+        try {
+            userRepository.changeRole(roleId, userId);
+            userRepository.changeUpdateAt(userId);
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException("Ошибка изменения роли. Пользователь " + userId + "не существует");
+        }
+    }
+
+    public void deleteById(Long id) {
+        if (id == null) {
+            throw new InvalidParamsException("Невалидный параметр идентификатор:" + null);
+        }
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException("Ошибка удаления пользователя. Пользователь " + id + "не существует");
+        }
     }
 }

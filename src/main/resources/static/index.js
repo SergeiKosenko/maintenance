@@ -34,17 +34,21 @@
                 templateUrl: 'auth/auth.html',
                 controller: 'authController'
             })
-            .when('/user', {
-                templateUrl: 'user/userLK.html',
-                controller: 'userController'
+            .when('/profile', {
+                templateUrl: 'profile/profile.html',
+                controller: 'profileController'
             })
             .when('/registration', {
                 templateUrl: 'registration/registration.html',
                 controller: 'regController'
             })
             .when('/admin', {
-                templateUrl: 'admin/admin_panel.html',
+                templateUrl: 'admin/admin.html',
                 controller: 'adminController'
+            })
+            .when('/adminusers', {
+                templateUrl: 'admin/adminusers.html',
+                controller: 'adminusersController'
             })
             .otherwise({
                 redirectTo: '/'
@@ -70,22 +74,17 @@
                 $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.maintenanceUser.token;
             }
         }
-        // if (!$localStorage.springWebGuestCartId) {
-        //     $http.get('http://localhost:5555/cart/api/v1/carts/generate')
-        //         .then(function successCallback(response) {
-        //             $localStorage.springWebGuestCartId = response.data.value;
-        //         });
-        // }
     }
 })();
 
-angular.module('maintenance').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage, $routeParams) {
+angular.module('maintenance').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
+    const contextPath = 'http://localhost:8188/maintenance/';
     $rootScope.listRoles = new Set();
     if ($localStorage.maintenanceUser){
         $rootScope.currentUserName = $localStorage.maintenanceUser.username;
     }
 
-    $scope.tryToAuth = function () {
+        $scope.tryToAuth = function () {
         $location.path('/auth');
     };
 
@@ -102,58 +101,33 @@ angular.module('maintenance').controller('indexController', function ($rootScope
     };
 
     $rootScope.isUserLoggedIn = function () {
-        return $localStorage.maintenanceUser;
+        if (!!$localStorage.maintenanceUser) {
+            return true;
+        } else {
+            return false;
+        }
     };
-
     $rootScope.isUserHasAdminRole = function () {
-        if ($localStorage.maintenanceUser){
+        if (!!$localStorage.maintenanceUser){
             $localStorage.maintenanceUser.listRoles.forEach($rootScope.listRoles.add, $rootScope.listRoles);
             return $rootScope.listRoles.has('ROLE_ADMIN');
         }
         return false;
     };
 
-    $rootScope.isUserHasManagerRole = function () {
-        if ($localStorage.maintenanceUser){
+    $rootScope.isUserHasUserRole = function () {
+        if (!!$localStorage.maintenanceUser){
             $localStorage.maintenanceUser.listRoles.forEach($rootScope.listRoles.add, $rootScope.listRoles);
-            return $rootScope.listRoles.has('ROLE_MANAGER');
+            return $rootScope.listRoles.has('ROLE_USER');
         }
         return false;
     };
-});
 
-angular.module('maintenance').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
-    $scope.tryToAuth = function () {
-        $http.post('http://localhost:8188/maintenance/auth', $scope.user)
-            .then(function successCallback(response) {
-                if (response.data.token) {
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.maintenanceUser = {username: $scope.user.username, token: response.data.token};
-
-                    $scope.user.username = null;
-                    $scope.user.password = null;
-
-                    $location.path('/');
-                }
-            }, function errorCallback(response) {
-            });
-    };
-
-    $scope.tryToLogout = function () {
-        $scope.clearUser();
-        $location.path('/');
-    };
-
-    $scope.clearUser = function () {
-        delete $localStorage.maintenanceUser;
-        $http.defaults.headers.common.Authorization = '';
-    };
-
-    $rootScope.isUserLoggedIn = function () {
-        if ($localStorage.maintenanceUser) {
-            return true;
-        } else {
-            return false;
+    $rootScope.isUserHasSuperAdminRole = function () {
+        if (!!$localStorage.maintenanceUser){
+            $localStorage.maintenanceUser.listRoles.forEach($rootScope.listRoles.add, $rootScope.listRoles);
+            return $rootScope.listRoles.has('ROLE_SUPER_ADMIN');
         }
+        return false;
     };
 });

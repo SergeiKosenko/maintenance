@@ -2,7 +2,9 @@ package ru.service.maintenance.converters;
 
 import org.springframework.stereotype.Component;
 import ru.service.maintenance.dtos.UsersDto;
+import ru.service.maintenance.entyties.Role;
 import ru.service.maintenance.entyties.User;
+import ru.service.maintenance.repositories.RoleRepository;
 
 @Component
 public class UserConverter {
@@ -18,6 +20,7 @@ public class UserConverter {
         usersDto.setRegionesTitle(p.getRegiones().getTitle());
         usersDto.setActive(p.isActive());
         usersDto.setPassword(p.getPassword());
+        usersDto.setRole(p.getRoles());
         return usersDto;
     }
 }
