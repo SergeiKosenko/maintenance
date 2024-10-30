@@ -2,9 +2,7 @@ package ru.service.maintenance.dtos;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.service.maintenance.entyties.Role;
 
-import java.util.List;
 import java.util.Set;
 
 @Data

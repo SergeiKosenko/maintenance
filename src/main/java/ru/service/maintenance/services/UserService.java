@@ -74,7 +74,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(bcryptCachedPassword);
         user.setEmail(usersDto.getEmail());
         user.setPhone(usersDto.getPhone());
-        user.setRoles((Set<Role>) roleRepository.findByName("ROLE_USER"));
+        user.setRoles(Set.of(roleRepository.findByName("ROLE_USER")));
         user.setRegiones(regionesService.FindByTitle(usersDto.getRegionesTitle()).get());
 
         userRepository.save(user);
@@ -97,6 +97,32 @@ public class UserService implements UserDetailsService {
         } catch (Exception ex) {
             throw new ResourceNotFoundException("Ошибка изменения роли. Пользователь " + userId + "не существует");
         }
+    }
+
+    @Transactional
+    public void changeActive(String active, Long userId) {
+        if (active == null || userId == null) {
+            throw new InvalidParamsException("Невалидные параметры");
+        }
+        try {
+            if (active.equals("true")) {userRepository.changeActive(true, userId);}
+            if (active.equals("false")) {userRepository.changeActive(false, userId);}
+            userRepository.changeUpdateAt(userId);
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException("Ошибка активации. Пользователь " + userId + "не существует");
+        }
+//        Long roleId;
+//        try {
+//            roleId = roleRepository.findByName(roleName).getId();
+//        } catch (Exception e) {
+//            throw new ResourceNotFoundException("Ошибка поиска роли. Роль " + roleName + "не существует");
+//        }
+//        try {
+//            userRepository.changeRole(roleId, userId);
+//            userRepository.changeUpdateAt(userId);
+//        } catch (Exception ex) {
+//            throw new ResourceNotFoundException("Ошибка изменения роли. Пользователь " + userId + "не существует");
+//        }
     }
 
     public void deleteById(Long id) {

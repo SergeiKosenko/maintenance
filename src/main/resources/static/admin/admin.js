@@ -5,6 +5,10 @@ angular.module('maintenance').controller('adminController', function ($rootScope
         ROLE_SUPER_ADMIN: "ROLE_SUPER_ADMIN",
         ROLE_USER: "ROLE_USER"
     };
+    // $scope.userActive = {
+    //     true: "true",
+    //     false: "false"
+    // };
     $scope.getAllUsers = function () {
         $http.get(contextPath + 'api/v1/users')
             .then(function (response) {
@@ -73,6 +77,28 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             params: {roleName: roleName}
         }).then(function (response) {
             alert("Роль изменена");
+            $scope.getUserById(userId);
+            $scope.getAllUsers();
+        });
+    };
+
+    $rootScope.isUserActive = function () {
+        if ($scope.currentUser.active) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.changeUsersActive = function (active, userId) {
+        $http({
+            url: contextPath + 'api/v1/users/active/' + userId,
+            method: 'PATCH',
+            params: {active: active}
+        }).then(function (response) {
+            if (active) {alert("Пользователь активирован");}
+            if (!active) {alert("Пользователь Заблокирован");}
+            // alert("Активация пользователя изменена!");
             $scope.getUserById(userId);
             $scope.getAllUsers();
         });

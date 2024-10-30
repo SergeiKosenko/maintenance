@@ -19,7 +19,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void changeRole(Long roleId, Long userId);
 
     @Modifying
+    @Query(value = "update users set active = ?1 where id = ?2", nativeQuery = true)
+    void changeActive(Boolean active, Long userId);
+
+    @Modifying
     @Query("update User u set u.updatedAt = CURRENT_TIMESTAMP where u.id = ?1")
     void changeUpdateAt(Long userId);
+
 
 }

@@ -62,6 +62,11 @@ public class UserController {
         userService.changeRole(roleName, id);
     }
 
+    @PatchMapping("/active/{id}")
+    public void changeActive(@RequestParam String active, @PathVariable Long id) {
+        userService.changeActive(active, id);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         userService.deleteById(id);

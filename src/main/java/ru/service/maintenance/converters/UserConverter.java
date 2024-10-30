@@ -6,6 +6,9 @@ import ru.service.maintenance.entyties.Role;
 import ru.service.maintenance.entyties.User;
 import ru.service.maintenance.repositories.RoleRepository;
 
+import java.util.List;
+import java.util.Set;
+
 @Component
 public class UserConverter {
     public UsersDto entityToDto(User p) {
