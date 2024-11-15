@@ -5,15 +5,18 @@ angular.module('maintenance').controller('adminController', function ($rootScope
         ROLE_SUPER_ADMIN: "ROLE_SUPER_ADMIN",
         ROLE_USER: "ROLE_USER"
     };
-    // $scope.userActive = {
-    //     true: "true",
-    //     false: "false"
-    // };
+
+    $scope.getAllRegiones = function () {
+        $http.get(contextPath + 'api/v1/regiones')
+            .then(function (response) {
+                $scope.allRegiones = response.data;
+            });
+    };
+
     $scope.getAllUsers = function () {
         $http.get(contextPath + 'api/v1/users')
             .then(function (response) {
                 $scope.allUsers = response.data;
-                // $scope.roles = $scope.allUsers.role;
                 var rnpFilters = JSON.parse(response.data);
                 $.each( rnpFilters.rnp, function(key, val) {
                     for (var i = 0; i < val.length; i++) {
@@ -23,6 +26,35 @@ angular.module('maintenance').controller('adminController', function ($rootScope
                 });
             });
     };
+
+    $scope.getRegionesById = function (regionesId){
+        $http.get(contextPath + 'api/v1/regiones/' + regionesId)
+            .then(function (response) {
+                $scope.currentRegiones = response.data;
+            });
+    }
+
+    $scope.changeRegiones = function (title, id) {
+        $http({
+            url: contextPath + 'api/v1/regiones/' + id,
+            method: 'PATCH',
+            params: {title: title}
+        }).then(function (response) {
+            alert("Регион изменен");
+            $scope.getRegionesById(id);
+            $scope.getAllRegiones();
+        });
+    };
+
+    $scope.deleteRegionesById = function (id) {
+        $http.delete(contextPath + 'api/v1/regiones/' + id)
+            .then(function (response) {
+                alert("Регион удален");
+                $scope.getRegionesById(id);
+                $scope.getAllRegiones();
+            });
+    };
+
     $scope.getUserById = function (userId){
         $http.get(contextPath + 'api/v1/users/' + userId)
             .then(function (response) {
@@ -68,7 +100,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
         } else {
             selectedRole.push(roleId);
         }
-    }
+    };
 
     $scope.changeUsersRole = function (roleName, userId) {
         $http({
@@ -98,7 +130,6 @@ angular.module('maintenance').controller('adminController', function ($rootScope
         }).then(function (response) {
             if (active) {alert("Пользователь активирован");}
             if (!active) {alert("Пользователь Заблокирован");}
-            // alert("Активация пользователя изменена!");
             $scope.getUserById(userId);
             $scope.getAllUsers();
         });

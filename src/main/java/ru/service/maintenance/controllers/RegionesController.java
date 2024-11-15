@@ -34,6 +34,11 @@ public class RegionesController {
         regionesService.createNewRegiones(regionesDto);
     }
 
+    @PatchMapping("/{id}")
+    public void changeRegiones(@RequestParam String title, @PathVariable Long id) {
+        regionesService.changeRegion(title, id);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteRegionesById(@PathVariable Long id) {
         regionesService.deleteById(id);
