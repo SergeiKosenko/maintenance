@@ -1,20 +1,19 @@
 angular.module('maintenance').controller('regController', function ($rootScope, $scope, $http) {
 
+    const contextPath = 'http://localhost:8188/maintenance';
+
     $scope.fillRegionesTable = function () {
-        $http.get('http://localhost:8188/maintenance/api/v1/regiones')
+        $http.get(contextPath + '/api/v1/regiones')
             .then(function (responce) {
                 $scope.regiones = responce.data;
             });
     };
 
-
-    const contextPath = 'http://localhost:8188/maintenance/api/v1/users/';
-
     $scope.newUser = {regionesTitle: '', lastName: '', firstName: '', phone: '',username: '', password: '', email: '', passwordConfirm: ''};
 
     $scope.tryToReg = function () {
 
-        $http.post(contextPath + 'register', $scope.newUser)
+        $http.post(contextPath + '/api/v1/users/register', $scope.newUser)
             .then(function successCallback(response) {
 
                 $scope.newUser.lastName = null;

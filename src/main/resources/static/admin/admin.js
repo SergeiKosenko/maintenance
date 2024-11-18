@@ -1,5 +1,5 @@
 angular.module('maintenance').controller('adminController', function ($rootScope, $scope, $http, $localStorage) {
-    const contextPath = 'http://localhost:8188/maintenance/';
+    const contextPath = 'http://localhost:8188/maintenance';
     $scope.userRole = {
         ROLE_ADMIN: "ROLE_ADMIN",
         ROLE_SUPER_ADMIN: "ROLE_SUPER_ADMIN",
@@ -7,14 +7,14 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     };
 
     $scope.getAllRegiones = function () {
-        $http.get(contextPath + 'api/v1/regiones')
+        $http.get(contextPath + '/api/v1/regiones')
             .then(function (response) {
                 $scope.allRegiones = response.data;
             });
     };
 
     $scope.getAllUsers = function () {
-        $http.get(contextPath + 'api/v1/users')
+        $http.get(contextPath + '/api/v1/users')
             .then(function (response) {
                 $scope.allUsers = response.data;
                 var rnpFilters = JSON.parse(response.data);
@@ -27,8 +27,20 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             });
     };
 
+    $scope.newRegiones = {title: ''};
+    $scope.CreateNewRegiones = function () {
+        $http.post(contextPath + '/api/v1/regiones', $scope.newRegiones)
+            .then(function successCallback(response) {
+                alert("Регион " + $scope.newRegiones.title + " добавлен!");
+                $scope.newRegiones.title = null;
+                $scope.getAllRegiones();
+                $location.path(contextPath + '/admin');
+            // }, function errorCallback(response) {
+            });
+    };
+
     $scope.getRegionesById = function (regionesId){
-        $http.get(contextPath + 'api/v1/regiones/' + regionesId)
+        $http.get(contextPath + '/api/v1/regiones/' + regionesId)
             .then(function (response) {
                 $scope.currentRegiones = response.data;
             });
@@ -36,7 +48,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
 
     $scope.changeRegiones = function (title, id) {
         $http({
-            url: contextPath + 'api/v1/regiones/' + id,
+            url: contextPath + '/api/v1/regiones/' + id,
             method: 'PATCH',
             params: {title: title}
         }).then(function (response) {
@@ -47,7 +59,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     };
 
     $scope.deleteRegionesById = function (id) {
-        $http.delete(contextPath + 'api/v1/regiones/' + id)
+        $http.delete(contextPath + '/api/v1/regiones/' + id)
             .then(function (response) {
                 alert("Регион удален");
                 $scope.getRegionesById(id);
@@ -56,7 +68,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     };
 
     $scope.getUserById = function (userId){
-        $http.get(contextPath + 'api/v1/users/' + userId)
+        $http.get(contextPath + '/api/v1/users/' + userId)
             .then(function (response) {
                 $scope.currentUser = response.data;
             });
@@ -87,7 +99,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     };
 
     $scope.getAllRoles = function () {
-        $http.get(contextPath + 'api/v1/users/roles')
+        $http.get(contextPath + '/api/v1/users/roles')
             .then(function (response) {
                 $scope.allRoles = response.data;
             });
@@ -104,7 +116,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
 
     $scope.changeUsersRole = function (roleName, userId) {
         $http({
-            url: contextPath + 'api/v1/users/roles/' + userId,
+            url: contextPath + '/api/v1/users/roles/' + userId,
             method: 'PATCH',
             params: {roleName: roleName}
         }).then(function (response) {
@@ -124,7 +136,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
 
     $scope.changeUsersActive = function (active, userId) {
         $http({
-            url: contextPath + 'api/v1/users/active/' + userId,
+            url: contextPath + '/api/v1/users/active/' + userId,
             method: 'PATCH',
             params: {active: active}
         }).then(function (response) {
@@ -136,13 +148,14 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     };
 
     $scope.deleteUser = function (userId) {
-        $http.delete('http://localhost:8188/maintenance/api/v1/users/' + userId)
+        $http.delete(contextPath + '/api/v1/users/' + userId)
             .then(function (response) {
                 alert("Пользователь удален");
                 $scope.getUserById(userId);
                 $scope.getAllUsers();
             });
     };
+    $scope.getAllRegiones();
     $scope.getAllUsers();
     $scope.getAllRoles();
 });

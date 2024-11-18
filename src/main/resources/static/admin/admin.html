@@ -23,18 +23,25 @@
                 <div class="col-12 center-content homepage-shops">
                     <div class="row g-2">
                         <div class="col-6 center-content homepage-shops">
+                            <h3 class="main-top-lit">Добавить регион</h3>
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <td>Название</td>
+                                </tr>
+                                <tr>
+                                    <td> <input class="form-control" type="text" ng-model="newRegiones.title"></td>
+                                    <td>
+                                        <button class="button_lit button_primary_lit" ng-click="CreateNewRegiones()"
+                                                type="submit">Сохранить
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-6 center-content homepage-shops">
                             <h3 class="main-top-lit">Изменить регион</h3>
-<!--                            <form novalidate ng-submit="submitCreateNewRegiones()" class="center-content">-->
-<!--                                <div>-->
-<!--                                    <label for="newRegionesTitle">Название</label>-->
-<!--                                    <input class="form-control" type="text" ng-model="newRegiones.title"-->
-<!--                                           id="neRegionesTitle">-->
-<!--                                </div>-->
-<!--                                <div class="center-content">-->
-<!--                                    <button class="button_lit button_primary_lit" type="submit">Сохранить</button>-->
-<!--                                </div>-->
-<!--                            </form>-->
-
                             <table class="table table-hover">
                                 <tr>
                                     <td>ID</td>
@@ -51,30 +58,20 @@
                                                 ng-click="changeRegiones(currentRegion, currentRegiones.id)">Сохранить
                                         </button>
                                     </td>
-<!--                                    <td>-->
-<!--                                        <button class="button_lit1 button_primary_lit btn btn-primary"-->
-<!--                                                ng-show="!isUserActive()"-->
-<!--                                                ng-click="changeUsersActive(true, currentUser.id)">Активировать-->
-<!--                                        </button>-->
-<!--                                        <button class="button_lit1 button_primary_lit btn btn-primary"-->
-<!--                                                ng-show="isUserActive()"-->
-<!--                                                ng-click="changeUsersActive(false, currentUser.id)">Заблокировать-->
-<!--                                        </button>-->
-<!--                                    </td>-->
                                 </tr>
                                 </tbody>
                             </table>
 
                         </div>
-                        <div class="col-6 center-content homepage-shops">
+
+                        <div class="col-6 center-content homepage-shops" getAllRegiones()>
                             <h3 class="main-top-lit">Регионы</h3>
                             <table class="table table-hover">
+                                <tbody>
                                 <tr>
-<!--                                    <td>ID</td>-->
                                     <td>Регион</td>
                                 </tr>
-                                <tr>
-<!--                                    <td>{{p.id}}</td>-->
+                                <tr ng-repeat="p in allRegiones">
                                     <td>{{p.title}}</td>
                                     <td>
                                         <button class="button_lit1 button_primary_lit btn btn-primary"
@@ -84,48 +81,37 @@
                                     <td>
                                         <button class="button_lit1 button_primary_lit btn btn-primary"
                                                 ng-click="deleteRegionesById()">Удалить
-<!--                                                ng-click="deleteRegionesById(p.id)">Удалить-->
+                                            <!--                                                ng-click="deleteRegionesById(p.id)">Удалить-->
                                         </button>
                                     </td>
                                 </tr>
+                                </tbody>
                             </table>
                         </div>
-                        <div class="col-6 center-content homepage-shops">
-                            <h3 class="main-top-lit">Добавить регион</h3>
-                            <form novalidate ng-submit="submitCreateNewRegiones()" class="center-content">
-                                <div>
-                                    <label for="newRegionesTitle">Название</label>
-                                    <input class="form-control" type="text" ng-model="newRegiones.title"
-                                           id="newRegionesTitle">
-                                </div>
-                                <div class="center-content">
-                                    <button class="button_lit button_primary_lit" type="submit">Сохранить</button>
-                                </div>
-                            </form>
-                        </div>
+
                     </div>
                 </div>
             </div>
 
-                <div id="content-2" ng-show="isUserHasAdminRole()">
-                    <div class="row g-2 center-content ">
-                        <div class="col-12 center-content homepage-shops">
+            <div id="content-2" ng-show="isUserHasAdminRole()">
+                <div class="row g-2 center-content ">
+                    <div class="col-12 center-content homepage-shops">
 
-                <select class="form-select" name="selection" >
-                    <option selected>Выбать регион</option>
-                    <option ng-repeat="pi in allRegiones" value="{{pi.id}}">{{pi.title}}</option>
-                </select>
+                        <select class="form-select" name="selection">
+                            <option selected>Выбать регион</option>
+                            <option ng-repeat="pi in allRegiones" value="{{pi.id}}">{{pi.title}}</option>
+                        </select>
 
-                </div>
                     </div>
                 </div>
+            </div>
 
 
             <div id="content-3" ng-show="isUserHasAdminRole()">
                 <div class="row g-2 center-content ">
                     <div class="col-12 center-content homepage-shops">
 
-                        <select class="form-select" name="selection" >
+                        <select class="form-select" name="selection">
                             <option selected>Выбать район</option>
                             <option ng-repeat="pi in allRegiones" value="{{pi.id}}">{{pi.title}}</option>
                         </select>
