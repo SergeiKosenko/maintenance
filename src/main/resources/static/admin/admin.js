@@ -67,6 +67,13 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             });
     };
 
+    $scope.getAllDistrict = function () {
+        $http.get(contextPath + '/api/v1/districts')
+            .then(function (response) {
+                $scope.allDistrict = response.data;
+            });
+    };
+
     $scope.getUserById = function (userId){
         $http.get(contextPath + '/api/v1/users/' + userId)
             .then(function (response) {
