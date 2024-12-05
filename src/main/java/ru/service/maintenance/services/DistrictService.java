@@ -1,6 +1,7 @@
 package ru.service.maintenance.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.service.maintenance.entyties.District;
 import ru.service.maintenance.repositories.DistrictRepository;
@@ -15,7 +16,7 @@ public class DistrictService {
     private final DistrictRepository districtRepository;
 
     public List<District> FindAll() {
-        return districtRepository.findAll();
+        return districtRepository.findAll(Sort.sort(getClass()));
     }
 
     public Optional<District> FindById(Long id) {return districtRepository.findById(id);}

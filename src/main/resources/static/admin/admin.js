@@ -1,5 +1,7 @@
 angular.module('maintenance').controller('adminController', function ($rootScope, $scope, $http, $localStorage) {
     const contextPath = 'http://localhost:8188/maintenance';
+
+    $rootScope.currentUserName = $localStorage.maintenanceUser.username;
     $scope.userRole = {
         ROLE_ADMIN: "ROLE_ADMIN",
         ROLE_SUPER_ADMIN: "ROLE_SUPER_ADMIN",
@@ -34,8 +36,6 @@ angular.module('maintenance').controller('adminController', function ($rootScope
                 alert("Регион " + $scope.newRegiones.title + " добавлен!");
                 $scope.newRegiones.title = null;
                 $scope.getAllRegiones();
-                $location.path(contextPath + '/admin');
-            // }, function errorCallback(response) {
             });
     };
 
