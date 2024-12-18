@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import ru.service.maintenance.dtos.DistrictDto;
 import ru.service.maintenance.entyties.District;
 
+import java.util.Optional;
+
 @Component
 public class DistrictConverter {
     public DistrictDto entityToDto(District p) {
@@ -11,6 +13,9 @@ public class DistrictConverter {
         districtDto.setId(p.getId());
         districtDto.setTitle(p.getTitle());
         districtDto.setRegionesTitle(p.getRegiones().getTitle());
+        districtDto.setRegionesId(p.getRegiones().getId());
         return districtDto;
     }
+
+
 }

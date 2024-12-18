@@ -9,9 +9,16 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     };
 
     $scope.getAllRegiones = function () {
-        $http.get(contextPath + '/api/v1/regiones')
+        $http.get(contextPath + '/api/v1/regiones/all')
             .then(function (response) {
                 $scope.allRegiones = response.data;
+            });
+    };
+
+    $scope.getUserRegiones = function () {
+        $http.get(contextPath + '/api/v1/regiones')
+            .then(function (response) {
+                $scope.userRegiones = response.data;
             });
     };
 
@@ -163,6 +170,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             });
     };
     $scope.getAllRegiones();
+    $scope.getUserRegiones();
     $scope.getAllUsers();
     $scope.getAllRoles();
 });

@@ -21,6 +21,7 @@ public class UserConverter {
         usersDto.setPhone(p.getPhone());
         usersDto.setEmail(p.getEmail());
         usersDto.setRegionesTitle(p.getRegiones().getTitle());
+        usersDto.setRegionesId(p.getRegiones().getId());
         usersDto.setActive(p.isActive());
         usersDto.setPassword(p.getPassword());
         usersDto.setRole(p.getRoles());

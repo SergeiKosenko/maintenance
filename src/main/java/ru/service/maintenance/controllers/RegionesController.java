@@ -23,13 +23,13 @@ public class RegionesController {
     private final RegionesConverter regionesConverter;
     private final UserService userService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<RegionesDto> getAllRegiones() {
         return regionesService.findAll().stream().map(regionesConverter::entityToDto).collect(Collectors.toList());
  }
 
-    @GetMapping("/userid")
-    public RegionesDto getAllRegionesUser(Principal principal) {
+    @GetMapping
+    public RegionesDto getUserRegiones(Principal principal) {
         return regionesConverter.entityToDto(regionesService.FindById(userService.findByUsername(principal.getName()).get().getRegiones().getId()).orElseThrow(() -> new ResourceNotFoundException("Регион с ID не найден")));
     }
 

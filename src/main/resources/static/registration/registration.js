@@ -3,7 +3,7 @@ angular.module('maintenance').controller('regController', function ($rootScope, 
     const contextPath = 'http://localhost:8188/maintenance';
 
     $scope.fillRegionesTable = function () {
-        $http.get(contextPath + '/api/v1/regiones')
+        $http.get(contextPath + '/api/v1/regiones/all')
             .then(function (responce) {
                 $scope.regiones = responce.data;
             });

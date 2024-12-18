@@ -9,6 +9,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class UsersDto {
     private Long id;
+    private Long regionesId;
     private String username;
     private String password;
     private String email;
@@ -19,4 +20,6 @@ public class UsersDto {
     private Set role;
     private boolean active;
 
+//    public void setRegionesId(Long id) {
+//    }
 }

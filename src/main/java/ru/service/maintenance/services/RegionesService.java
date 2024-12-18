@@ -21,10 +21,6 @@ import java.util.Optional;
 public class RegionesService {
     private final RegionesRepository regionesRepository;
 
-    public List<Regiones> FindAll() {
-        return regionesRepository.findAll();
-    }
-
     public Optional<Regiones> FindById(Long id) {return regionesRepository.findById(id);}
 
     public Optional<Regiones> FindByTitle(String title) {return regionesRepository.findByTitle(title);}
