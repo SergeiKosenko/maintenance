@@ -1,6 +1,7 @@
 package ru.service.maintenance.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.service.maintenance.converters.DistrictConverter;
 import ru.service.maintenance.dtos.DistrictDto;
@@ -19,7 +20,7 @@ public class DistrictController {
     private final DistrictService districtService;
     private final DistrictConverter districtConverter;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<DistrictDto> getAllDistricts() {
         return districtService.findAll().stream().map(districtConverter::entityToDto).collect(Collectors.toList());
     }
@@ -38,4 +39,21 @@ public class DistrictController {
     public DistrictDto getDistrictById(@PathVariable Long id){
         return districtConverter.entityToDto(districtService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Район с ID: " +id+ " не найден")));
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createNewDistrict(@RequestBody DistrictDto districtDto) {
+        districtService.createNewDistrict(districtDto);
+    }
+
+    @PatchMapping("/{id}")
+    public void changeDistrict(@RequestParam String title, @PathVariable Long id) {
+        districtService.changeDistrict(title, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteDistrictById(@PathVariable Long id) {
+        districtService.deleteById(id);
+    }
 }
+

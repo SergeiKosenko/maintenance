@@ -1,6 +1,6 @@
 angular.module('maintenance').controller('adminController', function ($rootScope, $scope, $http, $localStorage) {
-    const contextPath = 'http://localhost:8188/maintenance';
 
+    const contextPath = 'http://localhost:8188/maintenance';
     $rootScope.currentUserName = $localStorage.maintenanceUser.username;
     $scope.userRole = {
         ROLE_ADMIN: "ROLE_ADMIN",
@@ -15,10 +15,14 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             });
     };
 
+    $scope.regionId = {id: '2'};
     $scope.getUserRegiones = function () {
         $http.get(contextPath + '/api/v1/regiones')
             .then(function (response) {
                 $scope.userRegiones = response.data;
+                $scope.regionId.id = $scope.userRegiones.id;
+
+                $scope.getDistrictByRegionId($scope.regionId.id);
             });
     };
 
@@ -46,8 +50,8 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             });
     };
 
-    $scope.getRegionesById = function (regionesId){
-        $http.get(contextPath + '/api/v1/regiones/' + regionesId)
+    $scope.getRegionesById = function (id){
+        $http.get(contextPath + '/api/v1/regiones/' + id)
             .then(function (response) {
                 $scope.currentRegiones = response.data;
             });
@@ -74,12 +78,61 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             });
     };
 
+    // ************* Район *************************************
+
     $scope.getAllDistrict = function () {
         $http.get(contextPath + '/api/v1/districts')
             .then(function (response) {
                 $scope.allDistrict = response.data;
             });
     };
+
+    $scope.getDistrictByRegionId = function (regionId) {
+        $http.get(contextPath + '/api/v1/districts/regionid/' + regionId)
+            .then(function (response) {
+                $scope.districtAllByRegionId = response.data;
+            });
+    };
+
+    $scope.newDistrict = {title: '', regionesTitle: ''};
+    $scope.CreateNewDistrict = function () {
+        $http.post(contextPath + '/api/v1/districts', $scope.newDistrict)
+            .then(function successCallback(response) {
+                alert("Район " + $scope.newDistrict.title + " добавлен!");
+                $scope.newDistrict.title = null;
+                $scope.getDistrictByRegionId(1);
+            });
+    };
+
+    $scope.getDistrictById = function (id){
+        $http.get(contextPath + '/api/v1/districts/' + id)
+            .then(function (response) {
+                $scope.currentDistrict = response.data;
+            });
+    }
+
+    $scope.changeDistrict = function (title, id) {
+        $http({
+            url: contextPath + '/api/v1/districts/' + id,
+            method: 'PATCH',
+            params: {title: title}
+        }).then(function (response) {
+            alert("Район изменен");
+            $scope.getDistrictById(id);
+            $scope.getDistrictByRegionId(1);
+        });
+    };
+
+    $scope.deleteDistrictById = function (id) {
+        $http.delete(contextPath + '/api/v1/districts/' + id)
+            .then(function (response) {
+                alert("Район удален");
+                $scope.getDistrictById(id);
+                $scope.getDistrictByRegionId(1);
+            });
+    };
+
+    // ************************************************
 
     $scope.getUserById = function (userId){
         $http.get(contextPath + '/api/v1/users/' + userId)
@@ -171,6 +224,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     };
     $scope.getAllRegiones();
     $scope.getUserRegiones();
+    $scope.getDistrictByRegionId();
     $scope.getAllUsers();
     $scope.getAllRoles();
 });

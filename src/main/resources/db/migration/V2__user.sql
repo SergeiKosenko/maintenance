@@ -38,12 +38,16 @@ insert into roles (name) values
 insert into users (username, password, last_name, first_name, email, phone, active, region_id) values
     ( 'superAdmin', '$2a$10$A8BL.Fuh0JiHcpapcy0hLeIYT82hyJuwwZhgSPxRABoKP8prowdsq', 'Иванов', 'Иван', 'superadmin@mail.ru', '8 (999)-989-77-22', true, 1 ),
     ( 'admin', '$2a$10$A8BL.Fuh0JiHcpapcy0hLeIYT82hyJuwwZhgSPxRABoKP8prowdsq', 'Петров', 'Петр', 'admin@mail.ru', '8 (999)-989-77-33', true, 1 ),
-    ( 'user', '$2a$10$A8BL.Fuh0JiHcpapcy0hLeIYT82hyJuwwZhgSPxRABoKP8prowdsq', 'Сидоров', 'Василий', 'user@mail.ru', '8 (999)-989-77-11', true, 1 );
+    ( 'user', '$2a$10$A8BL.Fuh0JiHcpapcy0hLeIYT82hyJuwwZhgSPxRABoKP8prowdsq', 'Петров', 'Петр', 'admin@mail.ru', '8 (999)-989-77-33', true, 1 ),
+    ( 'sergonian', '$2a$10$A8BL.Fuh0JiHcpapcy0hLeIYT82hyJuwwZhgSPxRABoKP8prowdsq', 'Сидоров', 'Василий', 'user@mail.ru', '8 (999)-989-77-11', true, 2 ),
+    ( 'vasya', '$2a$10$A8BL.Fuh0JiHcpapcy0hLeIYT82hyJuwwZhgSPxRABoKP8prowdsq', 'Сидоров', 'Василий', 'user@mail.ru', '8 (999)-989-77-11', true, 3 );
 
 insert into users_roles (user_id, role_id) values
                              (1, 3),
                              (2, 2),
-                             (3, 1);
+                             (3, 1),
+                             (4, 2),
+                             (5, 2);
 
 
 create table comments

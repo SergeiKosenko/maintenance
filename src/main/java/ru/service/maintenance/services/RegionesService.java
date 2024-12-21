@@ -1,19 +1,15 @@
 package ru.service.maintenance.services;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.service.maintenance.dtos.RegionesDto;
-import ru.service.maintenance.entyties.District;
 import ru.service.maintenance.entyties.Regiones;
 import ru.service.maintenance.exceptions.InvalidParamsException;
 import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.repositories.RegionesRepository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +22,6 @@ public class RegionesService {
     public Optional<Regiones> FindByTitle(String title) {return regionesRepository.findByTitle(title);}
 
     @Transactional
-    @Cascade(CascadeType.ALL)
     public void deleteById(Long id) { regionesRepository.deleteById(id); }
 
     public void createNewRegiones(RegionesDto regionesDto) {

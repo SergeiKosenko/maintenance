@@ -7,7 +7,7 @@
                    ng-click="getAllRegiones()">
             <label for="tab-btn-1"><h3 class="main-top-lit" ng-show="isUserHasAdminRole()">Регион</h3></label>
             <input type="radio" name="tab-btn" id="tab-btn-2" value="" ng-show="isUserHasAdminRole()"
-                   ng-click="getAllRegiones()" || ng-click="getAllDistricts()">
+                   ng-click="getAllRegiones()">
             <label for="tab-btn-2"><h3 class="main-top-lit" ng-show="isUserHasAdminRole()">Район</h3></label>
             <input type="radio" name="tab-btn" id="tab-btn-3" value="" ng-show="isUserHasAdminRole()"
                    ng-click="getAllStreets()">
@@ -62,14 +62,12 @@
                                 </tr>
                                 </tbody>
                             </table>
-
                         </div>
 
                         <div class="col-6 center-content homepage-shops">
                             <h3 class="main-top-lit">Регионы</h3>
                             <table class="table table-hover">
                                 <tbody>
-
                                 <tr ng-repeat="p in allRegiones">
                                     <td>{{p.title}}</td>
                                     <td>
@@ -80,7 +78,8 @@
                                     <td>
                                         <button class="button_lit1 button_primary_lit btn btn-primary"
                                                 ng-click="deleteRegionesById()">Удалить
-                                            <!--                                                ng-click="deleteRegionesById(p.id)">Удалить-->
+                                            <!--ИЗМЕНИТЬ ФУНКЦИЮ ПОСЛЕ НАСТРОЙКИ КАСКАДНОГО УДАЛЕНИЯ-->
+                                            <!-- ng-click="deleteRegionesById(p.id)">Удалить-->
                                         </button>
                                     </td>
                                 </tr>
@@ -88,30 +87,6 @@
                             </table>
                         </div>
 
-                    </div>
-                </div>
-                <div class="col-12 center-content homepage-shops" ng-show="isUserHasAdminRole()">
-                    <div class="row g-2">
-                        <div class="col-6 center-content homepage-shops">
-                            <h3 class="main-top-lit">Регион </h3>
-                            <td class="main-top-lit" ng-model="newRegiones.title"></td>
-                            <!--                            <table class="table table-hover">-->
-                            <!--                                <tbody>-->
-                            <!--                                <tr>-->
-                            <!--                                    <td>Название</td>-->
-                            <!--                                    <td></td>-->
-                            <!--                                </tr>-->
-                            <!--                                <tr>-->
-                            <!--                                    <td><input class="form-control" type="text" ng-model="newRegiones.title"></td>-->
-                            <!--                                    <td>-->
-                            <!--                                        <button class="button_lit button_primary_lit" ng-click="CreateNewRegiones()"-->
-                            <!--                                                type="submit">Сохранить-->
-                            <!--                                        </button>-->
-                            <!--                                    </td>-->
-                            <!--                                </tr>-->
-                            <!--                                </tbody>-->
-                            <!--                            </table>-->
-                        </div>
                     </div>
                 </div>
             </div>
@@ -133,11 +108,12 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><input class="form-control" type="text" ng-model="newDistrict.title">
+                                    <td ng-model="newDistrict.regionesTitle = userRegiones.title">
+                                        <input class="form-control" type="text" ng-model="newDistrict.title">
                                     </td>
                                     <td>
                                         <button class="button_lit button_primary_lit"
-                                                ng-click="CreateNewDistrict()"
+                                                ng-click="CreateNewDistrict(newDistrict.regionesTitle, newDistrict.title)"
                                                 type="submit">Сохранить
                                         </button>
                                     </td>
@@ -145,6 +121,7 @@
                                 </tbody>
                             </table>
                         </div>
+
                         <div class="col-6 center-content homepage-shops">
                             <h3 class="main-top-lit">Изменить район</h3>
                             <table class="table table-hover">
@@ -157,11 +134,11 @@
                                 <tr ng-model="currentDistrict">
                                     <td>{{currentDistrict.id}}</td>
                                     <td>{{currentDistrict.title}}</td>
-                                    <td><input class="form-control" type="text" ng-model="currentDistricts">
+                                    <td><input class="form-control" type="text" ng-model="current_District">
                                     </td>
                                     <td>
                                         <button class="button_lit1 button_primary_lit btn btn-primary"
-                                                ng-click="changeDistrict(currentDistricts, currentDistrict.id)">
+                                                ng-click="changeDistrict(current_District, currentDistrict.id)">
                                             Сохранить
                                         </button>
                                     </td>
@@ -170,15 +147,14 @@
                             </table>
                         </div>
 
-
-                        <div class="col-6 center-content homepage-shops" getAllDistricts()>
+                        <div class="col-6 center-content homepage-shops">
                             <h3 class="main-top-lit">Районы</h3>
                             <table class="table table-hover">
                                 <tbody>
                                 <tr>
                                     <td>Район</td>
                                 </tr>
-                                <tr ng-repeat="p in allDistricts">
+                                <tr ng-repeat="p in districtAllByRegionId">
                                     <td>{{p.title}}</td>
                                     <td>
                                         <button class="button_lit1 button_primary_lit btn btn-primary"
@@ -188,14 +164,14 @@
                                     <td>
                                         <button class="button_lit1 button_primary_lit btn btn-primary"
                                                 ng-click="deleteDistrictById()">Удалить
-                                            <!--                                                ng-click="deleteRegionesById(p.id)">Удалить-->
+                                            <!--ИЗМЕНИТЬ ФУНКЦИЮ ПОСЛЕ НАСТРОЙКИ КАСКАДНОГО УДАЛЕНИЯ-->
+                                            <!--ng-click="deleteRegionesById(p.id)">Удалить-->
                                         </button>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -204,17 +180,14 @@
             <div id="content-3" ng-show="isUserHasAdminRole()">
                 <div class="row g-2 center-content ">
                     <div class="col-12 center-content homepage-shops">
-
                         <select class="form-select" name="selection">
                             <option selected>Выбать регион</option>
                             <option ng-repeat="pi in allRegiones" value="{{pi.id}}">{{pi.title}}</option>
                         </select>
-
                         <select class="form-select" name="selection">
                             <option selected>Выбать район</option>
                             <option ng-repeat="d in allDistrict" value="{{d.id}}">{{d.title}}</option>
                         </select>
-
                     </div>
                 </div>
             </div>

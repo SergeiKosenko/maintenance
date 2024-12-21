@@ -1,6 +1,7 @@
 package ru.service.maintenance.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,14 @@ public interface DistrictRepository extends JpaRepository<District, Long> {
 
     @Query("select ba from District ba where ba.regiones.id in :idRegiones")
     List<District> findAllByRegionesId(@Param("idRegiones") List<Long> idRegiones);
+
+    @Modifying
+    @Query(value = "update districts set title = ?1 where id = ?2", nativeQuery = true)
+    void changeDistrict(String title, Long id);
+
+    @Modifying
+    @Query("update District u set u.updatedAt = CURRENT_TIMESTAMP where u.id = ?1")
+    void changeUpdateAt(Long id);
 
 }
 
