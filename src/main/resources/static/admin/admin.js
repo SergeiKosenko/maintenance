@@ -81,7 +81,7 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     // ************* Район *************************************
 
     $scope.getAllDistrict = function () {
-        $http.get(contextPath + '/api/v1/districts')
+        $http.get(contextPath + '/api/v1/districts/all')
             .then(function (response) {
                 $scope.allDistrict = response.data;
             });

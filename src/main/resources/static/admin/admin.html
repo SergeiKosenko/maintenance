@@ -180,14 +180,37 @@
             <div id="content-3" ng-show="isUserHasAdminRole()">
                 <div class="row g-2 center-content ">
                     <div class="col-12 center-content homepage-shops">
-                        <select class="form-select" name="selection">
-                            <option selected>Выбать регион</option>
-                            <option ng-repeat="pi in allRegiones" value="{{pi.id}}">{{pi.title}}</option>
-                        </select>
-                        <select class="form-select" name="selection">
-                            <option selected>Выбать район</option>
-                            <option ng-repeat="d in allDistrict" value="{{d.id}}">{{d.title}}</option>
-                        </select>
+                        <tr ng-model="getUserRegiones()">
+                            <td><h3 class="main-top-lit">Регион {{userRegiones.title}}</h3></td>
+                        </tr>
+                        <div class="col-6 center-content homepage-shops">
+                            <h3 class="main-top-lit">Район</h3>
+                            <select class="form-select" name="selection">
+                                <option selected>Выбать район</option>
+                                <option ng-repeat="d in districtAllByRegionId" value="{{d.id}}">{{d.title}}</option>
+                            </select>
+
+                            <h3 class="main-top-lit">Добавить улицу</h3>
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <td>Улица</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td ng-model="newDistrict.regionesTitle = userRegiones.title">
+                                        <input class="form-control" type="text" ng-model="newDistrict.title">
+                                    </td>
+                                    <td>
+                                        <button class="button_lit button_primary_lit"
+                                                ng-click="CreateNewDistrict(newDistrict.regionesTitle, newDistrict.title)"
+                                                type="submit">Сохранить
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

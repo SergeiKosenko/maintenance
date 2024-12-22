@@ -1,10 +1,8 @@
 package ru.service.maintenance.controllers;
 
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.service.maintenance.converters.UserConverter;
 import ru.service.maintenance.dtos.UsersDto;
-import ru.service.maintenance.entyties.User;
 import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.repositories.RegionesRepository;
 import ru.service.maintenance.services.RoleService;

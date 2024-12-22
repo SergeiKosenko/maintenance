@@ -24,8 +24,8 @@ public class District {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "regiones")
-    private List<District> streets;
+    @OneToMany(mappedBy = "district")
+    private List<Street> streets;
 
     @ManyToOne
     @JoinColumn(name = "region_id")
