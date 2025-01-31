@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.service.maintenance.dtos.DistrictDto;
-import ru.service.maintenance.dtos.RegionesDto;
 import ru.service.maintenance.entyties.District;
 import ru.service.maintenance.entyties.Regiones;
 import ru.service.maintenance.exceptions.InvalidParamsException;
@@ -35,6 +34,8 @@ public class DistrictService {
     public Collection<District> findAll() {
         return districtRepository.findAll();
     }
+
+    public Optional<District> FindByTitle(String title) {return districtRepository.findByTitle(title);}
 
     public void createNewDistrict(DistrictDto districtDto) {
         District district = new District();

@@ -1,10 +1,8 @@
 package ru.service.maintenance.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import ru.service.maintenance.converters.StreetConverter;
 import ru.service.maintenance.dtos.DistrictDto;
 import ru.service.maintenance.dtos.StreetDto;
@@ -43,4 +41,22 @@ public class StreetController {
     public StreetDto getStreetById(@PathVariable Long id){
         return streetConverter.entityToDto(streetService.FindById(id).orElseThrow(() -> new ResourceNotFoundException("Улица с ID: " +id+ " не найдена")));
     }
+
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createNewStreet(@RequestBody StreetDto streetDto) {
+        streetService.createNewStreet(streetDto);
+    }
+
+    @PatchMapping("/{id}")
+    public void changeDistrict(@RequestParam String title, @PathVariable Long id) {
+        streetService.changeStreet(title, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStreetById(@PathVariable Long id) {
+        streetService.deleteById(id);
+    }
 }
+

@@ -126,13 +126,13 @@
                             <h3 class="main-top-lit">Изменить район</h3>
                             <table class="table table-hover">
                                 <tr>
-                                    <td>ID</td>
+<!--                                    <td>ID</td>-->
                                     <td>Район</td>
                                     <td></td>
                                 </tr>
                                 <tbody>
                                 <tr ng-model="currentDistrict">
-                                    <td>{{currentDistrict.id}}</td>
+<!--                                    <td>{{currentDistrict.id}}</td>-->
                                     <td>{{currentDistrict.title}}</td>
                                     <td><input class="form-control" type="text" ng-model="current_District">
                                     </td>
@@ -184,11 +184,57 @@
                             <td><h3 class="main-top-lit">Регион {{userRegiones.title}}</h3></td>
                         </tr>
                         <div class="col-6 center-content homepage-shops">
-                            <h3 class="main-top-lit">Район</h3>
-                            <select class="form-select" name="selection">
-                                <option selected>Выбать район</option>
-                                <option ng-repeat="d in districtAllByRegionId" value="{{d.id}}">{{d.title}}</option>
-                            </select>
+                            <h3 class="main-top-lit">Выбрать район</h3>
+
+
+                                            <select
+                                                    class= "form-control form-select"
+                                                    ng-model="currentDistrict"
+                                                    name="selection"
+                                                    ng-change="getStreetByDistrictId(currentDistrict)">
+                                                <option ng-value="item.id"
+                                                        ng-mouseup="currentDistrict.title=item.title"
+                                                        ng-repeat="item in districtAllByRegionId">{{ item.title }}
+                                                </option>
+                                            </select>
+                            <h3 class="main-top-lit" ng-model="currentDistrict">Улицы в районе {{currentDistrict.title}}</h3>
+
+
+
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr ng-model="currentStreet">
+                                    <!--                                    <td>{{currentDistrict.id}}</td>-->
+                                    <td>{{currentStreet.title}}</td>
+                                    <td><input class="form-control" type="text" ng-model="current_Street">
+                                    </td>
+                                    <td>
+                                        <button class="button_lit1 button_primary_lit btn btn-primary"
+                                                ng-click="changeStreet(current_Street, currentStreet.id)">
+                                            Сохранить
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat="p in streetAllByDistrictId">
+                                    <td>{{p.title}}</td>
+                                    <td>
+                                        <button class="button_lit1 button_primary_lit btn btn-primary"
+                                                ng-click="getStreetById(p.id)">Изменить
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="button_lit1 button_primary_lit btn btn-primary"
+                                                ng-click="deleteStreetById()">Удалить
+                                            <!--ИЗМЕНИТЬ ФУНКЦИЮ ПОСЛЕ НАСТРОЙКИ КАСКАДНОГО УДАЛЕНИЯ-->
+                                            <!--ng-click="deleteRegionesById(p.id)">Удалить-->
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+
+
 
                             <h3 class="main-top-lit">Добавить улицу</h3>
                             <table class="table table-hover">
@@ -198,12 +244,12 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td ng-model="newDistrict.regionesTitle = userRegiones.title">
-                                        <input class="form-control" type="text" ng-model="newDistrict.title">
+                                    <td ng-model="currentDistrictId">
+                                        <input class="form-control" type="text" ng-model="currentDistrictId.title">
                                     </td>
                                     <td>
                                         <button class="button_lit button_primary_lit"
-                                                ng-click="CreateNewDistrict(newDistrict.regionesTitle, newDistrict.title)"
+                                                ng-click="CreateNewStreet(currentDistrictId.title, currentDistrictId.title)"
                                                 type="submit">Сохранить
                                         </button>
                                     </td>

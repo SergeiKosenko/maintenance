@@ -111,6 +111,8 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             });
     }
 
+    $scope.currentDistrictId = {};
+
     $scope.changeDistrict = function (title, id) {
         $http({
             url: contextPath + '/api/v1/districts/' + id,
@@ -132,7 +134,63 @@ angular.module('maintenance').controller('adminController', function ($rootScope
             });
     };
 
-    // ************************************************
+    // *********************************************************
+
+    // ************* Улица *************************************
+
+    $scope.getAllStreet = function () {
+        $http.get(contextPath + '/api/v1/streets/all')
+            .then(function (response) {
+                $scope.allStreet = response.data;
+            });
+    };
+
+    $scope.getStreetByDistrictId = function (districtId) {
+        $http.get(contextPath + '/api/v1/streets/districtid/' + districtId)
+            .then(function (response) {
+                $scope.streetAllByDistrictId = response.data;
+            });
+    };
+
+    $scope.newStreets = {title: '', districtTitle: ''};
+    $scope.CreateNewStreet = function () {
+        $http.post(contextPath + '/api/v1/streets', $scope.newStreets)
+            .then(function successCallback(response) {
+                alert("Улица " + $scope.newStreets.title + " добавлена!");
+                $scope.newStreets.title = null;
+                $scope.getDistrictByRegionId(1);
+            });
+    };
+
+    $scope.getStreetById = function (id){
+        $http.get(contextPath + '/api/v1/streets/' + id)
+            .then(function (response) {
+                $scope.currentStreet = response.data;
+            });
+    }
+
+    $scope.changeStreet = function (title, id) {
+        $http({
+            url: contextPath + '/api/v1/streets/' + id,
+            method: 'PATCH',
+            params: {title: title}
+        }).then(function (response) {
+            alert("Улица изменена");
+            $scope.getStreetById(id);
+//            $scope.getDistrictByRegionId(1);
+        });
+    };
+
+    $scope.deleteStreetById = function (id) {
+        $http.delete(contextPath + '/api/v1/streets/' + id)
+            .then(function (response) {
+                alert("Улица удалена");
+                $scope.getStreetById(id);
+ //               $scope.getDistrictByRegionId(1);
+            });
+    };
+
+    // *******************************************************
 
     $scope.getUserById = function (userId){
         $http.get(contextPath + '/api/v1/users/' + userId)

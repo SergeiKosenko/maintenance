@@ -3,7 +3,7 @@ package ru.service.maintenance.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.service.maintenance.entyties.District;
+import ru.service.maintenance.dtos.StreetDto;
 import ru.service.maintenance.entyties.Street;
 import ru.service.maintenance.exceptions.InvalidParamsException;
 import ru.service.maintenance.exceptions.ResourceNotFoundException;
@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StreetService {
     private final StreetRepository streetRepository;
+    private final DistrictService districtService;
 
     public Optional<Street> FindById(Long id) {
         return streetRepository.findById(id);
@@ -33,6 +34,14 @@ public class StreetService {
             throw new InvalidParamsException("Невалидные параметры");
         }
         return streetRepository.findAllByDistrictId(idDistrict);
+    }
+
+
+    public void createNewStreet(StreetDto streetDto) {
+        Street street = new Street();
+        street.setDistrict(districtService.FindByTitle(streetDto.getDistrictTitle()).get());
+        street.setTitle(streetDto.getTitle());
+        streetRepository.save(street);
     }
 
     @Transactional
