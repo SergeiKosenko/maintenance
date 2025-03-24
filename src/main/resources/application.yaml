@@ -5,20 +5,41 @@ server:
 location: img
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:maintenance;MODE=PostgreSQL
-    username: sa
-    password:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5434/maintenance
+    username: maintenance
+    password: cthutq2405
   jpa:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 jwt:
   secret: 3w2oiVLKGglkjhf3497g948tyrh0428xczbzgFJgJHL"4gf8734yto3467gjvg>&G*&^F7f3r87gihdsf
   lifetime: 36000000
+
+
+#server:
+#  port: 8188
+#  servlet:
+#    context-path: /maintenance
+#location: img
+#spring:
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:maintenance;MODE=PostgreSQL
+#    username: sa
+#    password:
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.H2Dialect
+#  h2:
+#    console:
+#      enabled: true
+#      settings:
+#        web-allow-others: true
+#jwt:
+#  secret: 3w2oiVLKGglkjhf3497g948tyrh0428xczbzgFJgJHL"4gf8734yto3467gjvg>&G*&^F7f3r87gihdsf
+#  lifetime: 36000000
