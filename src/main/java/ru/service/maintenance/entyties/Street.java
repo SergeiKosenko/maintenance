@@ -3,8 +3,12 @@ package ru.service.maintenance.entyties;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "streets")
@@ -16,13 +20,23 @@ public class Street {
     @Column(name = "id")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "id_district")
+    private District district;
+
+    @OneToMany(mappedBy = "streets")
+    private List<WorkSite> workSites;
+
     @Column(name = "title")
     private String title;
 
-    @Column(name = "house")
-    private Long house;
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    @Column(name = "frame")
-    private String frame;
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
 
 }

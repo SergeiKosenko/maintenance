@@ -18,7 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
-
+.gitignore
+.application.yaml
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
