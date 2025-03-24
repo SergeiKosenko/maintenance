@@ -10,61 +10,110 @@
                 <tr ng-model="getUserRegiones()">
                     <td><h3 class="main-top-lit">Регион {{userRegiones.title}}</h3></td>
                 </tr>
-                <table class="table table-hover">
-                    <tbody>
-                    <tr  >
-                        <td>Объект</td>
-                        <td>Район</td>
-                        <td>Улица</td>
-                        <td>Дом</td>
-                        <td>Корпус</td>
-                        <td>В работе</td>
-                        <td ng-show="p.atWork">Сделано</td>
-                        <td ng-show="p.atWork">Техник</td>
-                    </tr>
-                    <tr ng-repeat="p in WorkSiteAllByRegionId" ng-show="p.!done">
-                        <td ng-show="p.!done">{{p.manufactureTitle}}</td>
-                        <td ng-show="p.!done">{{p.districtTitle}}</td>
-                        <td ng-show="p.!done">{{p.streetTitle}}</td>
-                        <td ng-show="p.!done">{{p.house}}</td>
-                        <td ng-show="p.!done">{{p.frame}}</td>
-                        <td>
-                            <button class="button_lit1 button_primary_lit btn btn-primary"
-                                    ng-show="!p.atWork"
-                                    ng-click="changeAtWork(true, p.id)">В работу
-                            </button>
-                        </td>
-                        <td>
-                            <button class="button_lit1 button_primary_lit btn btn-primary"
-                                    ng-show="p.atWork"
-                                    ng-click="changeAtWork(false, p.id)">Отмена
-                            </button>
-                        </td>
-                        <td>
-                            <button class="button_lit1 button_primary_lit btn btn-primary"
-                                    ng-show="p.atWork"
-                                    ng-click="changeDone(true, p.id)">Сделано
-                                <!--ИЗМЕНИТЬ ФУНКЦИЮ ПОСЛЕ НАСТРОЙКИ КАСКАДНОГО УДАЛЕНИЯ-->
-                                <!--ng-click="deleteRegionesById(p.id)">Удалить-->
-                            </button>
-                        </td>
-                        <td>{{p.userAtWork}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td>Объект</td>
+                            <td>Район</td>
+                            <td>Улица</td>
+                            <td>Дом</td>
+                            <td>Корпус</td>
+                            <td>В работе</td>
+                            <!--                        <td ng-show="p.atWork">Сделано</td>-->
+                            <!--                        <td ng-show="p.atWork">Техник</td>-->
+                        </tr>
+                        <tr ng-repeat="p in WorkSiteAllByRegionId" ng-show="p.!done">
+                            <td ng-show="p.!done">{{p.manufactureTitle}}</td>
+                            <td ng-show="p.!done">{{p.districtTitle}}</td>
+                            <td ng-show="p.!done">{{p.streetTitle}}</td>
+                            <td ng-show="p.!done">{{p.house}}</td>
+                            <td ng-show="p.!done">{{p.frame}}</td>
+                            <td>
+                                <button class="button_lit1 button_primary_lit btn btn-primary"
+                                        ng-show="!p.atWork"
+                                        ng-click="changeAtWork(true, p.id)">В работу
+                                </button>
+                            </td>
+                            <td>
+                                <button class="button_lit1 button_primary_lit btn btn-primary"
+                                        ng-show="p.atWork"
+                                        ng-click="changeAtWork(false, p.id)">Отмена
+                                </button>
+                            </td>
+                            <td>
+                                <button class="button_lit1 button_primary_lit btn btn-primary"
+                                        ng-show="p.atWork"
+                                        ng-click="changeDone(true, p.id)">Сделано
+                                    <!--ИЗМЕНИТЬ ФУНКЦИЮ ПОСЛЕ НАСТРОЙКИ КАСКАДНОГО УДАЛЕНИЯ-->
+                                    <!--ng-click="deleteRegionesById(p.id)">Удалить-->
+                                </button>
+                            </td>
+                            <td>{{p.userAtWork}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <tr ng-model="getUserRegiones()">
+                    <td><h3 class="main-top-lit">Не прошли в прошлом месяце:</h3></td>
+                </tr>
+                <div>
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td>Объект</td>
+                            <td>Район</td>
+                            <td>Улица</td>
+                            <td>Дом</td>
+                            <td>Корпус</td>
+                            <td>В работе</td>
+                            <!--                        <td ng-show="p.atWork">Сделано</td>-->
+                            <!--                        <td ng-show="p.atWork">Техник</td>-->
+                        </tr>
+                        <tr ng-repeat="n in WorkSiteAllByRegionIdNoDone" ng-show="n.noDone">
+                            <td >{{n.manufactureTitle}}</td>
+                            <td >{{n.districtTitle}}</td>
+                            <td >{{n.streetTitle}}</td>
+                            <td >{{n.house}}</td>
+                            <td >{{n.frame}}</td>
+                            <td>
+                                <button class="button_lit1 button_primary_lit btn btn-primary"
+                                        ng-show="!n.atWork"
+                                        ng-click="changeAtWork(true, n.id)">В работу
+                                </button>
+                            </td>
+                            <td>
+                                <button class="button_lit1 button_primary_lit btn btn-primary"
+                                        ng-show="n.atWork"
+                                        ng-click="changeAtWork(false, n.id)">Отмена
+                                </button>
+                            </td>
+                            <td>
+                                <button class="button_lit1 button_primary_lit btn btn-primary"
+                                        ng-show="n.atWork"
+                                        ng-click="changeNoDone(false, n.id)">Сделано
+                                    <!--ИЗМЕНИТЬ ФУНКЦИЮ ПОСЛЕ НАСТРОЙКИ КАСКАДНОГО УДАЛЕНИЯ-->
+                                    <!--ng-click="deleteRegionesById(p.id)">Удалить-->
+                                </button>
+                            </td>
+                            <td>{{n.userAtWork}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
     <div ng-show="!isUserLoggedIn()">
-    <table class="table table-hover">
-        <tbody>
-        <tr ng-show="!isUserLoggedIn()" >
+        <table class="table table-hover">
+            <tbody>
+            <tr ng-show="!isUserLoggedIn()">
 
-            <td>
-                <button class="btn btn-danger" ng-click="deleteStreet(p.id)">Удалить</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                <td>
+                    <button class="btn btn-danger" ng-click="deleteStreet(p.id)">Удалить</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>

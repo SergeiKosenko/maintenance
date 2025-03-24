@@ -118,6 +118,24 @@ public class WorkSiteService {
             throw new ResourceNotFoundException("Ошибка статуса обЪекта. Объект с ID " + id + "не существует");
         }
     }
+    @Transactional
+    public void changeNoDone(String noDone, Long id) {
+        if (noDone == null || id == null) {
+            throw new InvalidParamsException("Невалидные параметры");
+        }
+        try {
+            if (noDone.equals("true")) {
+                workSiteRepository.changeNoDone(true, id);
+            }
+            if (noDone.equals("false")) {
+                workSiteRepository.changeNoDone(false, id);
+            }
+            workSiteRepository.changeUpdateAt(id);
+            changeAtWork("false", id);
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException("Ошибка статуса обЪекта. Объект с ID " + id + "не существует");
+        }
+    }
 
     public void updateFlagsMonthly() {
         List<WorkSite> workSites = workSiteRepository.findAll();
@@ -130,44 +148,36 @@ public class WorkSiteService {
         }
     }
 
-    public List<WorkSiteDto> getWorkSiteByUserRegiones(Long regionId) {
-        List<Long> IdStreet = getLongs(regionId);
-        return findAllByStreetId(IdStreet).stream()
-                .filter(workSite -> !workSite.isDone()) // Фильтруем только незавершенные работы
-                .map(workSiteConverter::entityToDto) // Преобразуем в DTO
-                .collect(Collectors.toList());
-    }
+//    public List<WorkSiteDto> getWorkSiteByUserRegionesNoDone(Long regionId) {
+//        List<Long> IdStreet = getLongs(regionId);
+//        return findAllByStreetId(IdStreet).stream()
+//                .filter(WorkSite::isNoDone) // Фильтруем только незавершенные работы
+//                .map(workSiteConverter::entityToDto) // Преобразуем в DTO
+//                .collect(Collectors.toList()); // Собираем результат в список
+//    }
 
-    public List<WorkSiteDto> getWorkSiteByUserRegionesNoDone(Long regionId) {
-        List<Long> IdStreet = getLongs(regionId);
-        return findAllByStreetId(IdStreet).stream()
-                .filter(WorkSite::isNoDone) // Фильтруем только незавершенные работы
-                .map(workSiteConverter::entityToDto) // Преобразуем в DTO
-                .collect(Collectors.toList()); // Собираем результат в список
-    }
-
-    private List<Long> getLongs(Long regionId) {
-        // Получаем все районы для данного региона
-        List<DistrictDto> districts = new ArrayList<>();
-        for (District district : districtService.findAllByRegionesId(regionId)) {
-            DistrictDto districtDto = districtConverter.entityToDto(district);
-            districts.add(districtDto);
-        }
-
-        // Получаем все улицы для всех найденных районов
-        List<Long> idDistrict = districts.stream()
-                .map(DistrictDto::getId)
-                .collect(Collectors.toList());
-        List<StreetDto> streets = new ArrayList<>();
-        for (Street street : streetService.findAllByDistrictId(idDistrict)) {
-            StreetDto streetDto = streetConverter.entityToDto(street);
-            streets.add(streetDto);
-        }
-
-        // Получаем все объекты для всех найденных улиц
-        List<Long> IdStreet = streets.stream()
-                .map(StreetDto::getId)
-                .collect(Collectors.toList());
-        return IdStreet;
-    }
+//    private List<Long> getLongs(Long regionId) {
+//        // Получаем все районы для данного региона
+//        List<DistrictDto> districts = new ArrayList<>();
+//        for (District district : districtService.findAllByRegionesId(regionId)) {
+//            DistrictDto districtDto = districtConverter.entityToDto(district);
+//            districts.add(districtDto);
+//        }
+//
+//        // Получаем все улицы для всех найденных районов
+//        List<Long> idDistrict = districts.stream()
+//                .map(DistrictDto::getId)
+//                .collect(Collectors.toList());
+//        List<StreetDto> streets = new ArrayList<>();
+//        for (Street street : streetService.findAllByDistrictId(idDistrict)) {
+//            StreetDto streetDto = streetConverter.entityToDto(street);
+//            streets.add(streetDto);
+//        }
+//
+//        // Получаем все объекты для всех найденных улиц
+//        List<Long> IdStreet = streets.stream()
+//                .map(StreetDto::getId)
+//                .collect(Collectors.toList());
+//        return IdStreet;
+//    }
 }

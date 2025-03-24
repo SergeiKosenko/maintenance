@@ -62,14 +62,40 @@ public class WorkSiteController {
         List<Long> IdStreet = streets.stream()
                 .map(StreetDto::getId)
                 .collect(Collectors.toList());
-        return findAllByStreetId(IdStreet).stream()
+        return workSiteService.findAllByStreetId(IdStreet).stream()
+                .filter(workSite -> !workSite.isDone()) // Фильтруем только незавершенные работы
+                .map(workSiteConverter::entityToDto) // Преобразуем в DTO
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/regionnodone/{regionId}")
+    public List<WorkSiteDto> getWorkSiteByUserRegionesNoDone(@PathVariable Long regionId) {
+        // Получаем все районы для данного региона
+        List<DistrictDto> districts = new ArrayList<>();
+        for (District district : districtService.findAllByRegionesId(regionId)) {
+            DistrictDto districtDto = districtConverter.entityToDto(district);
+            districts.add(districtDto);
+        }
+
+        // Получаем все улицы для всех найденных районов
+        List<Long> idDistrict = districts.stream()
+                .map(DistrictDto::getId)
+                .collect(Collectors.toList());
+        List<StreetDto> streets = new ArrayList<>();
+        for (Street street : streetService.findAllByDistrictId(idDistrict)) {
+            StreetDto streetDto = streetConverter.entityToDto(street);
+            streets.add(streetDto);
+        }
+
+        // Получаем все объекты для всех найденных улиц
+        List<Long> IdStreet = streets.stream()
+                .map(StreetDto::getId)
+                .collect(Collectors.toList());
+        return workSiteService.findAllByStreetId(IdStreet).stream()
                 .filter(WorkSite::isNoDone) // Фильтруем только незавершенные работы
                 .map(workSiteConverter::entityToDto) // Преобразуем в DTO
-                .collect(Collectors.toList()); // Собираем результат в список
+                .collect(Collectors.toList());
     }
-    }
-
-
 
     @GetMapping("/streetid/{streetId}")
     public List<WorkSiteDto> getWorkSiteByStreetId(@PathVariable List<Long> streetId) {
@@ -110,5 +136,10 @@ public class WorkSiteController {
     @PatchMapping("/done/{id}")
     public void changeDone(@RequestParam String done, @PathVariable Long id) {
         workSiteService.changeDone(done, id);
+    }
+
+    @PatchMapping("/nodone/{id}")
+    public void changeNoDone(@RequestParam String noDone, @PathVariable Long id) {
+        workSiteService.changeNoDone(noDone, id);
     }
 }

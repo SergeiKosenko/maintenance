@@ -29,6 +29,13 @@ angular.module('maintenance').controller('workSitesController', function ($scope
             });
     };
 
+    $scope.getWorkSiteByUserRegionesNoDone = function (id) {
+        $http.get(contextPath + '/api/v1/worksites/regionnodone/' + id)
+            .then(function (response) {
+                $scope.WorkSiteAllByRegionIdNoDone = response.data;
+            });
+    };
+
     $scope.changeAtWork = function (atWork, id) {
         $http({
             url: contextPath + '/api/v1/worksites/atwork/' + id,
@@ -38,6 +45,7 @@ angular.module('maintenance').controller('workSitesController', function ($scope
             if (atWork) {alert("Объект взят в работу");}
             if (!atWork) {alert("Работа на объекте отменена");}
             $scope.getWorkSiteByUserRegiones($scope.regionId.id);
+            $scope.getWorkSiteByUserRegionesNoDone($scope.regionId.id);
         });
     };
 
@@ -52,9 +60,20 @@ angular.module('maintenance').controller('workSitesController', function ($scope
         });
     };
 
+    $scope.changeNoDone = function (noDone, id) {
+        $http({
+            url: contextPath + '/api/v1/worksites/nodone/' + id,
+            method: 'PATCH',
+            params: {noDone: noDone}
+        }).then(function (response) {
+            if (noDone) {alert("Объект сделан");}
+            $scope.getWorkSiteByUserRegionesNoDone($scope.regionId.id);
+        });
+    };
+
 
     $scope.getUserRegiones();
     $scope.getWorkSiteByUserRegiones($scope.regionId.id);
-
+    $scope.getWorkSiteByUserRegionesNoDone($scope.regionId.id);
 
 });
