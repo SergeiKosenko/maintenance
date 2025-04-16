@@ -1,6 +1,6 @@
 angular.module('maintenance').controller('workSitesController', function ($scope, $rootScope, $http, $localStorage) {
 
-    const contextPath = 'http://localhost:8188/maintenance';
+    const contextPath = window.BACKEND_URL;
 
     $rootScope.isUserLoggedIn = function () {
         if (!!$localStorage.maintenanceUser) {

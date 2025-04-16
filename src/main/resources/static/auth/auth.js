@@ -1,8 +1,8 @@
 angular.module('maintenance').controller('authController', function ($rootScope, $scope, $http, $location, $localStorage) {
-    const contextPath = 'http://localhost:8188/maintenance/';
+    const contextPath = window.BACKEND_URL;
 
     $scope.tryToAuth = function () {
-        $http.post(contextPath + 'auth', $scope.user)
+        $http.post(contextPath + '/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;

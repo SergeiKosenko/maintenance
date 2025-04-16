@@ -94,7 +94,7 @@ create table work_sites
     updated_at      timestamp default current_timestamp
 );
 
--- insert into work_sites (id_street, house, frame, id_manufacture, id_installation) values
---     ( 1, '34', '', 1, 1 ),
---     ( 2, '45', 'Корпус 2', 2, 2 );
+insert into work_sites (id_street, house, frame, id_manufacture, id_installation) values
+    ( 1, '34', '', 1, 1 ),
+    ( 2, '45', 'Корпус 2', 2, 2 );
 

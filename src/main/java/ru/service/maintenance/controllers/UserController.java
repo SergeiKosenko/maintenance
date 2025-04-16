@@ -1,5 +1,7 @@
 package ru.service.maintenance.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.service.maintenance.converters.UserConverter;
 import ru.service.maintenance.dtos.UsersDto;
@@ -8,7 +10,9 @@ import ru.service.maintenance.repositories.RegionesRepository;
 import ru.service.maintenance.services.RoleService;
 import ru.service.maintenance.services.UserService;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,4 +59,19 @@ public class UserController {
     public void deleteById(@PathVariable Long id) {
         userService.deleteById(id);
     }
+
+    @PatchMapping("/{username}/telegram")
+    public ResponseEntity<?> updateTelegramChatId(
+            @PathVariable String username,
+            @RequestBody Map<String, String> request,
+            Principal principal) {
+
+        if (!principal.getName().equals(username) && !userService.isAdmin(principal.getName())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        userService.updateTelegramChatId(username, request.get("telegramChatId"));
+        return ResponseEntity.ok().build();
+    }
 }
+

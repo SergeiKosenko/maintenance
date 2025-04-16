@@ -6,7 +6,7 @@ location: img
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5434/maintenance
+    url: jdbc:postgresql://localhost:5432/maintenance
     username: maintenance
     password: cthutq2405
   jpa:
@@ -17,7 +17,15 @@ spring:
 jwt:
   secret: 3w2oiVLKGglkjhf3497g948tyrh0428xczbzgFJgJHL"4gf8734yto3467gjvg>&G*&^F7f3r87gihdsf
   lifetime: 36000000
-
+telegram:
+  bot:
+    token: 6830607520:AAG0S4AfvruVlzHXkpRuzm45F8RHGOM53Z0
+    username: ServicePlus_Bot
+  api:
+    base-url: http://37.79.203.13:8188/maintenance
+#app:
+  #backend:
+    #url: http://37.79.203.13:8188/maintenance/
 
 #server:
 #  port: 8188

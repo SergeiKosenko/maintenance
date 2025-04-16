@@ -189,7 +189,7 @@
                                     name="selection"
                                     ng-change="getStreetByDistrictId(currentDistrict)">
                                 <option ng-value="item.id"
-                                        ng-mouseup="currentDistrict.title=item.title"
+                                        ng-mouseup="newStreets.districtTitle=item.title"
                                         ng-repeat="item in districtAllByRegionId">{{ item.title }}
                                 </option>
                             </select>
@@ -197,14 +197,14 @@
                                 <td><h3 class="main-top-lit" ng-model="currentDistrict">Улицы в районе
                                     {{newStreets.districtTitle}}</h3></td>
                             </tr>
-                            <tr ng-model="currentStreet"
+                            <tr ng-model="currentStreet">
                             <td>{{currentStreet.title}}</td>
                             <td><input class="form-control" type="text" ng-model="current_Street">
                             </td>
                             <td>
                                 <button class="button_lit1 button_primary_lit btn btn-primary"
                                         ng-click="changeStreet(current_Street, currentStreet.id)">
-                                    Сохранить
+                                    Изменить
                                 </button>
                             </td>
                             </tr>

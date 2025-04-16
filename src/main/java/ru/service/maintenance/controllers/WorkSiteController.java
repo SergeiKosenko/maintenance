@@ -1,8 +1,11 @@
 package ru.service.maintenance.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.service.maintenance.bot.MaintenanceBot;
 import ru.service.maintenance.converters.DistrictConverter;
 import ru.service.maintenance.converters.StreetConverter;
 import ru.service.maintenance.converters.WorkSiteConverter;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/worksites")
 @RequiredArgsConstructor
@@ -118,15 +122,27 @@ public class WorkSiteController {
         workSiteService.createNewWorkSite(workSiteDto);
     }
 
+//    @PatchMapping("/{id}")
+//    public void changeWorkSite(@RequestParam String title, @PathVariable Long id) {
+//        workSiteService.changeWorkSite(title, id);
+//    }
+
+
     @PatchMapping("/{id}")
-    public void changeWorkSite(@RequestParam String title, @PathVariable Long id) {
-        workSiteService.changeWorkSite(title, id);
+    public ResponseEntity<Void> updateWorkSite(
+            @PathVariable Long id,
+            @RequestBody WorkSiteDto updateDto) {
+        log.info("Received PATCH for id {} with data: {}", id, updateDto);
+        workSiteService.updateWorkSite(id, updateDto);
+        return ResponseEntity.ok().build();
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteWorkSiteById(@PathVariable Long id) {
         workSiteService.deleteById(id);
     }
+
 
     @PatchMapping("/atwork/{id}")
     public void changeAtWork(@RequestParam String atWork, @PathVariable Long id) {

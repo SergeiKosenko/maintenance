@@ -1,6 +1,6 @@
 angular.module('maintenance').controller('regController', function ($rootScope, $scope, $http) {
 
-    const contextPath = 'http://localhost:8188/maintenance';
+    const contextPath = window.BACKEND_URL;
 
     $scope.fillRegionesTable = function () {
         $http.get(contextPath + '/api/v1/regiones/all')

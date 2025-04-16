@@ -78,7 +78,7 @@
 })();
 
 angular.module('maintenance').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
-    const contextPath = 'http://localhost:8188/maintenance/';
+    const contextPath = window.BACKEND_URL;
     $rootScope.listRoles = new Set();
     if ($localStorage.maintenanceUser){
         $rootScope.currentUserName = $localStorage.maintenanceUser.username;

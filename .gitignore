@@ -19,6 +19,9 @@ target/
 *.iml
 *.ipr
 .gitignore
+.docker-compose.yaml
+.Dockerfile
+!**/src/main/resources/application.yaml
 .application.yaml
 ### NetBeans ###
 /nbproject/private/

@@ -3,6 +3,7 @@ package ru.service.maintenance.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.service.maintenance.bot.MaintenanceBot;
 import ru.service.maintenance.converters.DistrictConverter;
 import ru.service.maintenance.converters.StreetConverter;
 import ru.service.maintenance.converters.WorkSiteConverter;
@@ -148,36 +149,35 @@ public class WorkSiteService {
         }
     }
 
-//    public List<WorkSiteDto> getWorkSiteByUserRegionesNoDone(Long regionId) {
-//        List<Long> IdStreet = getLongs(regionId);
-//        return findAllByStreetId(IdStreet).stream()
-//                .filter(WorkSite::isNoDone) // Фильтруем только незавершенные работы
-//                .map(workSiteConverter::entityToDto) // Преобразуем в DTO
-//                .collect(Collectors.toList()); // Собираем результат в список
-//    }
+    public void updateWorkSite(Long id, WorkSiteDto updateDto) {
+        WorkSite workSite = workSiteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("WorkSite not found"));
 
-//    private List<Long> getLongs(Long regionId) {
-//        // Получаем все районы для данного региона
-//        List<DistrictDto> districts = new ArrayList<>();
-//        for (District district : districtService.findAllByRegionesId(regionId)) {
-//            DistrictDto districtDto = districtConverter.entityToDto(district);
-//            districts.add(districtDto);
-//        }
-//
-//        // Получаем все улицы для всех найденных районов
-//        List<Long> idDistrict = districts.stream()
-//                .map(DistrictDto::getId)
-//                .collect(Collectors.toList());
-//        List<StreetDto> streets = new ArrayList<>();
-//        for (Street street : streetService.findAllByDistrictId(idDistrict)) {
-//            StreetDto streetDto = streetConverter.entityToDto(street);
-//            streets.add(streetDto);
-//        }
-//
-//        // Получаем все объекты для всех найденных улиц
-//        List<Long> IdStreet = streets.stream()
-//                .map(StreetDto::getId)
-//                .collect(Collectors.toList());
-//        return IdStreet;
-//    }
+        // Обновляем только необходимые поля
+        if (updateDto.getAtWork() != null) {
+            workSite.setAtWork(updateDto.getAtWork());
+            if (updateDto.getAtWork()) {
+                workSite.setDone(false);
+                workSite.setNoDone(false);
+            }
+        }
+
+        if (updateDto.getDone() != null) {
+            workSite.setDone(updateDto.getDone());
+            if (updateDto.getDone()) {
+                workSite.setAtWork(false);
+                workSite.setNoDone(false);
+            }
+        }
+
+        if (updateDto.getNoDone() != null) {
+            workSite.setNoDone(updateDto.getNoDone());
+        }
+
+        if (updateDto.getUserAtWork() != null) {
+            workSite.setUserAtWork(updateDto.getUserAtWork());
+        }
+
+        workSiteRepository.save(workSite);
+    }
 }

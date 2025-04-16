@@ -5,15 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.service.maintenance.converters.RegionesConverter;
 import ru.service.maintenance.dtos.RegionesDto;
-import ru.service.maintenance.entyties.Regiones;
 import ru.service.maintenance.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.services.RegionesService;
 import ru.service.maintenance.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController

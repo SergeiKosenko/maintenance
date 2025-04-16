@@ -33,6 +33,19 @@ public class UserService implements UserDetailsService {
     private final RegionesService regionesService;
     private final RoleRepository roleRepository;
 
+    public void updateTelegramChatId(String username, String chatId) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        user.setTelegram(chatId);
+        userRepository.save(user);
+    }
+
+    public boolean isAdmin(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+    }
+
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
