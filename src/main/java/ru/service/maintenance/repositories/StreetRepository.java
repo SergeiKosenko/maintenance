@@ -15,6 +15,9 @@ public interface StreetRepository extends JpaRepository<Street, Long> {
     @Query("select ba from Street ba where ba.district.id in :idDistrict")
     List<Street> findAllByDistrictId(@Param("idDistrict") List <Long> idDistrict);
 
+    @Query("select ba from Street ba where ba.district.id in :districtId")
+    List<Street> FindAllByDistrictId(@Param("districtId") Long districtId);
+
     @Modifying
     @Query(value = "update streets set title = ?1 where id = ?2", nativeQuery = true)
     void changeStreet(String title, Long id);

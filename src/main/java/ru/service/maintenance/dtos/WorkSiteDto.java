@@ -9,6 +9,7 @@ public class WorkSiteDto {
     private Long id;
     private Long streetId;
     private String districtTitle;
+    private Long districtId;
     private Long regionId;
     private String streetTitle;
     private String house;

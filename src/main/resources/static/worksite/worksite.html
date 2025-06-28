@@ -71,11 +71,11 @@
                             <!--                        <td ng-show="p.atWork">Техник</td>-->
                         </tr>
                         <tr ng-repeat="n in WorkSiteAllByRegionIdNoDone" ng-show="n.noDone">
-                            <td >{{n.manufactureTitle}}</td>
-                            <td >{{n.districtTitle}}</td>
-                            <td >{{n.streetTitle}}</td>
-                            <td >{{n.house}}</td>
-                            <td >{{n.frame}}</td>
+                            <td>{{n.manufactureTitle}}</td>
+                            <td>{{n.districtTitle}}</td>
+                            <td>{{n.streetTitle}}</td>
+                            <td>{{n.house}}</td>
+                            <td>{{n.frame}}</td>
                             <td>
                                 <button class="button_lit1 button_primary_lit btn btn-primary"
                                         ng-show="!n.atWork"
@@ -108,10 +108,18 @@
         <table class="table table-hover">
             <tbody>
             <tr ng-show="!isUserLoggedIn()">
-
-                <td>
-                    <button class="btn btn-danger" ng-click="deleteStreet(p.id)">Удалить</button>
-                </td>
+                <td>Объект</td>
+                <td>Район</td>
+                <td>Улица</td>
+                <td>Дом</td>
+                <td>Корпус</td>
+            </tr>
+            <tr ng-repeat="p in WorkSiteAll" ng-show="!isUserLoggedIn()">
+                <td>{{p.manufactureTitle}}</td>
+                <td>{{p.districtTitle}}</td>
+                <td>{{p.streetTitle}}</td>
+                <td>{{p.house}}</td>
+                <td>{{p.frame}}</td>
             </tr>
             </tbody>
         </table>

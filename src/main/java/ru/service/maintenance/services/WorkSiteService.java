@@ -143,7 +143,13 @@ public class WorkSiteService {
         for (WorkSite workSite : workSites) {
             if (!workSite.isDone()) {
                 workSite.setNoDone(true);
+                workSite.setAtWork(false);
+                workSite.setUserAtWork("");
+            }
+            if (workSite.isDone()) {
                 workSite.setDone(false);
+                workSite.setAtWork(false);
+                workSite.setUserAtWork("");
             }
             workSiteRepository.saveAll(workSites);
         }
@@ -156,18 +162,18 @@ public class WorkSiteService {
         // Обновляем только необходимые поля
         if (updateDto.getAtWork() != null) {
             workSite.setAtWork(updateDto.getAtWork());
-            if (updateDto.getAtWork()) {
-                workSite.setDone(false);
-                workSite.setNoDone(false);
-            }
+//            if (updateDto.getAtWork()) {
+//                workSite.setDone(false);
+//                workSite.setNoDone(false);
+//            }
         }
 
         if (updateDto.getDone() != null) {
             workSite.setDone(updateDto.getDone());
-            if (updateDto.getDone()) {
-                workSite.setAtWork(false);
-                workSite.setNoDone(false);
-            }
+//            if (updateDto.getDone()) {
+//                workSite.setAtWork(false);
+//                workSite.setNoDone(false);
+//            }
         }
 
         if (updateDto.getNoDone() != null) {

@@ -38,6 +38,13 @@ public class StreetService {
         return streetRepository.findAllByDistrictId(idDistrict);
     }
 
+    public List<Street> FindAllByDistrictId(Long districtId) {
+        if (districtId == null) {
+            throw new InvalidParamsException("Невалидные параметры");
+        }
+        return streetRepository.FindAllByDistrictId(districtId);
+    }
+
 
     public void createNewStreet(StreetDto streetDto) {
         Street street = new Street();

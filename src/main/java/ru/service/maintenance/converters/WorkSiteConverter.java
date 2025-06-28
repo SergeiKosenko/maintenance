@@ -12,6 +12,7 @@ public class WorkSiteConverter {
         workSiteDto.setId(p.getId());
         workSiteDto.setStreetId(p.getStreets().getId());
         workSiteDto.setDistrictTitle(p.getStreets().getDistrict().getTitle());
+        workSiteDto.setDistrictId(p.getStreets().getDistrict().getId());
         workSiteDto.setRegionId(p.getStreets().getDistrict().getRegiones().getId());
         workSiteDto.setStreetTitle(p.getStreets().getTitle());
         workSiteDto.setHouse(p.getHouse());

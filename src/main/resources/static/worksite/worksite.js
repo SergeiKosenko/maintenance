@@ -29,6 +29,13 @@ angular.module('maintenance').controller('workSitesController', function ($scope
             });
     };
 
+    $scope.getWorkSite = function () {
+        $http.get(contextPath + '/api/v1/worksites/all')
+            .then(function (response) {
+                $scope.WorkSiteAll = response.data;
+            });
+    };
+
     $scope.getWorkSiteByUserRegionesNoDone = function (id) {
         $http.get(contextPath + '/api/v1/worksites/regionnodone/' + id)
             .then(function (response) {
@@ -75,5 +82,6 @@ angular.module('maintenance').controller('workSitesController', function ($scope
     $scope.getUserRegiones();
     $scope.getWorkSiteByUserRegiones($scope.regionId.id);
     $scope.getWorkSiteByUserRegionesNoDone($scope.regionId.id);
+    $scope.getWorkSite();
 
 });

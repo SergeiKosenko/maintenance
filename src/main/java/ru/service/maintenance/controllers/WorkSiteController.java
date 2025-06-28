@@ -22,6 +22,7 @@ import ru.service.maintenance.services.StreetService;
 import ru.service.maintenance.services.WorkSiteService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,6 +102,29 @@ public class WorkSiteController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/district/{districtId}")
+    public List<WorkSiteDto> getWorkSiteByDistrictId(@PathVariable List<Long> districtId) {
+
+        // Получаем все улицы для всех найденных районов
+        //List<Street> streets = streetService.FindAllByDistrictId(districtId);
+        List<StreetDto> streets = new ArrayList<>();
+        for (Street street : streetService.findAllByDistrictId(districtId)) {
+            StreetDto streetDto = streetConverter.entityToDto(street);
+            streets.add(streetDto);
+        }
+//        return streets;
+        //        Получаем все объекты для всех найденных улиц
+        List<Long> IdStreet = streets.stream()
+                .map(StreetDto::getId)
+                .collect(Collectors.toList());
+        return workSiteService.findAllByStreetId(IdStreet).stream()
+                //.filter(workSite -> !workSite.isDone()) // Фильтруем только незавершенные работы
+                .map(workSiteConverter::entityToDto) // Преобразуем в DTO
+                .collect(Collectors.toList());
+    }
+
+
+
     @GetMapping("/streetid/{streetId}")
     public List<WorkSiteDto> getWorkSiteByStreetId(@PathVariable List<Long> streetId) {
         List<WorkSiteDto> list = new ArrayList<>();
@@ -121,12 +145,6 @@ public class WorkSiteController {
     public void createNewWorkSite(@RequestBody WorkSiteDto workSiteDto) {
         workSiteService.createNewWorkSite(workSiteDto);
     }
-
-//    @PatchMapping("/{id}")
-//    public void changeWorkSite(@RequestParam String title, @PathVariable Long id) {
-//        workSiteService.changeWorkSite(title, id);
-//    }
-
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateWorkSite(

@@ -75,6 +75,11 @@ public class MaintenanceBot extends TelegramLongPollingBot {
 
         if ("get_regions".equals(callbackData)) {
             getUserRegion(chatId, session);
+        } else if (callbackData.startsWith("district_")) {
+            Long districtId = Long.parseLong(callbackData.substring("district_".length()));
+            displayDistrictObjects(chatId, districtId, session);
+        } else if ("back_to_districts".equals(callbackData)) {
+            getUserRegion(chatId, session);
         } else if (callbackData.startsWith("action_")) {
             String[] parts = callbackData.split("_");
             String action = parts[1];
@@ -121,13 +126,11 @@ public class MaintenanceBot extends TelegramLongPollingBot {
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 Map<String, Object> authResponse = response.getBody();
                 String token = (String) authResponse.get("token");
-                Long regionId = authResponse.get("regionId") != null ?
-                        Long.parseLong(authResponse.get("regionId").toString()) : null;
 
                 UserSession session = new UserSession();
                 session.setToken(token);
                 session.setUsername(username);
-                session.setRegionId(regionId);
+                // regionId больше не устанавливаем здесь, он будет получен через getUserRegion
                 userSessions.put(chatId, session);
 
                 sendMessage(chatId, "Авторизация успешна!");
@@ -168,56 +171,194 @@ public class MaintenanceBot extends TelegramLongPollingBot {
             headers.set("Authorization", "Bearer " + session.getToken());
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
-            ResponseEntity<RegionesDto> response = restTemplate.exchange(
+            // 1. Получаем регион пользователя
+            ResponseEntity<RegionesDto> regionResponse = restTemplate.exchange(
                     apiBaseUrl + "/api/v1/regiones",
                     HttpMethod.GET,
                     entity,
                     RegionesDto.class
             );
 
-            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                displayWorkSites(chatId, response.getBody().getId(), session);
+            if (regionResponse.getStatusCode() == HttpStatus.OK && regionResponse.getBody() != null) {
+                Long regionId = regionResponse.getBody().getId();
+                session.setRegionId(regionId);
+
+                // 2. Получаем активные объекты для группировки по районам
+                ResponseEntity<List<WorkSiteDto>> activeResponse = restTemplate.exchange(
+                        apiBaseUrl + "/api/v1/worksites/region/" + regionId,
+                        HttpMethod.GET,
+                        entity,
+                        new ParameterizedTypeReference<List<WorkSiteDto>>() {}
+                );
+
+                // 3. Получаем невыполненные в прошлом месяце
+                ResponseEntity<List<WorkSiteDto>> notDoneResponse = restTemplate.exchange(
+                        apiBaseUrl + "/api/v1/worksites/regionnodone/" + regionId,
+                        HttpMethod.GET,
+                        entity,
+                        new ParameterizedTypeReference<List<WorkSiteDto>>() {}
+                );
+
+                if (activeResponse.getStatusCode() == HttpStatus.OK && activeResponse.getBody() != null) {
+                    // Показываем список районов
+                    List<WorkSiteDto> activeSites = activeResponse.getBody();
+                    Map<String, List<WorkSiteDto>> districts = activeSites.stream()
+                            .collect(Collectors.groupingBy(WorkSiteDto::getDistrictTitle));
+
+                    if (!districts.isEmpty()) {
+                        SendMessage districtsMessage = new SendMessage();
+                        districtsMessage.setChatId(chatId.toString());
+                        districtsMessage.setText("Выберите район:");
+
+                        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+                        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+                        districts.forEach((districtName, districtSites) -> {
+                            Long districtId = districtSites.get(0).getDistrictId();
+                            keyboard.add(List.of(
+                                    InlineKeyboardButton.builder()
+                                            .text(districtName)
+                                            .callbackData("district_" + districtId)
+                                            .build()
+                            ));
+                        });
+
+                        markup.setKeyboard(keyboard);
+                        districtsMessage.setReplyMarkup(markup);
+                        execute(districtsMessage);
+                    }
+                    sendMessage(chatId, "\n📋 Не сделано: " + activeSites.size() + " объекта");
+                    // Показываем невыполненные объекты
+                    if (notDoneResponse.getStatusCode() == HttpStatus.OK &&
+                            notDoneResponse.getBody() != null &&
+                            !notDoneResponse.getBody().isEmpty()) {
+                        sendMessage(chatId, "\n📋 Не выполненные в прошлом месяце:");
+                        displayWorkSiteList(chatId, notDoneResponse.getBody(), session);
+                    }
+                }
             }
         } catch (Exception e) {
-            sendMessage(chatId, "Ошибка при получении региона: " + e.getMessage());
-            log.error("Error getting region", e);
+            sendMessage(chatId, "Сессия истекла!\n\n" +
+                            "Для авторизации введите ваш логин и пароль в формате:\n" +
+                            "логин:пароль\n\n" +
+                            "Пример: login:password");
+//            + e.getMessage());
+
+            log.error("Error getting region data", e);
         }
     }
 
-    private void displayWorkSites(Long chatId, Long regionId, UserSession session) {
+    private void displayDistrictObjects(Long chatId, Long districtId, UserSession session) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + session.getToken());
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
-            ResponseEntity<List<WorkSiteDto>> activeResponse = restTemplate.exchange(
-                    apiBaseUrl + "/api/v1/worksites/region/" + regionId,
+            ResponseEntity<List<WorkSiteDto>> response = restTemplate.exchange(
+                    apiBaseUrl + "/api/v1/worksites/district/" + districtId,
                     HttpMethod.GET,
                     entity,
                     new ParameterizedTypeReference<List<WorkSiteDto>>() {}
             );
 
-            ResponseEntity<List<WorkSiteDto>> notDoneResponse = restTemplate.exchange(
-                    apiBaseUrl + "/api/v1/worksites/regionnodone/" + regionId,
-                    HttpMethod.GET,
-                    entity,
-                    new ParameterizedTypeReference<List<WorkSiteDto>>() {}
-            );
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                List<WorkSiteDto> sites = response.getBody();
 
-            if (activeResponse.getStatusCode() == HttpStatus.OK && notDoneResponse.getStatusCode() == HttpStatus.OK) {
-                sendMessage(chatId, "📋 Активные объекты:");
-                displayWorkSiteList(chatId, activeResponse.getBody(), session);
+                if (sites.isEmpty()) {
+                    sendMessage(chatId, "В этом районе нет объектов");
+                    return;
+                }
 
-                sendMessage(chatId, "\n📋 Не выполненные в прошлом месяце:");
-                displayWorkSiteList(chatId, notDoneResponse.getBody(), session);
+                String districtName = sites.get(0).getDistrictTitle();
+
+                // Сначала отправляем заголовок с названием района
+                sendMessage(chatId, "🏙 " + districtName + "");
+
+                for (WorkSiteDto site : sites) {
+                    StringBuilder messageText = new StringBuilder();
+                    messageText.append("\n📍 ").append(formatAddress(site)).append("\n");
+                    messageText.append("🛠 ").append(site.getManufactureTitle()).append("\n");
+                    messageText.append("⚙ Статус: ").append(getStatusText(site)).append("\n");
+
+                    if (site.getAtWork()) {
+                        messageText.append("👷 ").append(site.getUserAtWork()).append("\n");
+                    }
+
+                    List<InlineKeyboardButton> buttons = new ArrayList<>();
+
+                    if ((!site.getDone()) & (!site.getNoDone())) {
+                        if (site.getAtWork()) {
+                            buttons.add(InlineKeyboardButton.builder()
+                                    .text("❌ Отменить")
+                                    .callbackData("action_cancel_" + site.getId())
+                                    .build());
+
+                            buttons.add(InlineKeyboardButton.builder()
+                                    .text("✔️ Сделано")
+                                    .callbackData("action_done_" + site.getId())
+                                    .build());
+                        } else {
+                            buttons.add(InlineKeyboardButton.builder()
+                                    .text("✅ Взять в работу")
+                                    .callbackData("action_take_" + site.getId())
+                                    .build());
+                        }
+                    }
+
+                    if ((!site.getDone()) & (site.getNoDone())){
+                        if (site.getAtWork()) {
+                            buttons.add(InlineKeyboardButton.builder()
+                                    .text("❌ Отменить")
+                                    .callbackData("action_cancelno_" + site.getId())
+                                    .build());
+
+                            buttons.add(InlineKeyboardButton.builder()
+                                    .text("✔️ Отметить выполненным")
+                                    .callbackData("action_doneno_" + site.getId())
+                                    .build());
+                        } else {
+                            buttons.add(InlineKeyboardButton.builder()
+                                    .text("✅ Взять в работу")
+                                    .callbackData("action_takeno_" + site.getId())
+                                    .build());
+                        }
+                    }
+
+                    if (!buttons.isEmpty()) {
+                        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+                        markup.setKeyboard(List.of(buttons));
+
+                        SendMessage message = new SendMessage();
+                        message.setChatId(chatId.toString());
+                        message.setText(messageText.toString());
+                        message.setParseMode("HTML");
+                        message.setReplyMarkup(markup);
+
+                        execute(message);
+                    }
+                }
+
+                // Добавляем кнопку возврата отдельным сообщением
+                InlineKeyboardMarkup backMarkup = new InlineKeyboardMarkup();
+                backMarkup.setKeyboard(List.of(
+                        List.of(InlineKeyboardButton.builder()
+                                .text("◀️ К выбору района")
+                                .callbackData("back_to_districts")
+                                .build())
+                ));
+
+                SendMessage backMessage = new SendMessage();
+                backMessage.setChatId(chatId.toString());
+                backMessage.setText("Выберите действие:");
+                backMessage.setReplyMarkup(backMarkup);
+
+                execute(backMessage);
             }
         } catch (Exception e) {
             sendMessage(chatId, "Ошибка при получении объектов: " + e.getMessage());
-            log.error("Error displaying work sites", e);
+            log.error("Error displaying district objects", e);
         }
     }
-
-
 
     private void displayWorkSiteList(Long chatId, List<WorkSiteDto> sites, UserSession session) throws TelegramApiException {
         if (sites == null || sites.isEmpty()) {
@@ -244,30 +385,43 @@ public class MaintenanceBot extends TelegramLongPollingBot {
 
                 List<InlineKeyboardButton> buttons = new ArrayList<>();
 
-                if (!site.getDone()) {
+                if ((site.getDone()) & (site.getNoDone())) {
                     if (site.getAtWork()) {
                         buttons.add(InlineKeyboardButton.builder()
                                 .text("❌ Отменить")
-                                .callbackData("action_cancel_" + site.getId())
+                                .callbackData("action_cancelnodone_" + site.getId())
                                 .build());
 
                         buttons.add(InlineKeyboardButton.builder()
                                 .text("✔️ Сделано")
-                                .callbackData("action_done_" + site.getId())
+                                .callbackData("action_marknodone_" + site.getId())
                                 .build());
                     } else {
                         buttons.add(InlineKeyboardButton.builder()
                                 .text("✅ Взять в работу")
-                                .callbackData("action_take_" + site.getId())
+                                .callbackData("action_takenodone_" + site.getId())
                                 .build());
                     }
                 }
 
-                if (site.getNoDone()) {
-                    buttons.add(InlineKeyboardButton.builder()
-                            .text("✔️ Отметить выполненным")
-                            .callbackData("action_markdone_" + site.getId())
-                            .build());
+                if ((!site.getDone()) & (site.getNoDone())) {
+                    if (site.getAtWork()) {
+                        buttons.add(InlineKeyboardButton.builder()
+                                .text("❌ Отменить")
+                                .callbackData("action_canceldone_" + site.getId())  //canceldone
+                                .build());
+
+                        buttons.add(InlineKeyboardButton.builder()
+                                .text("✔️ Выполнено")
+                                .callbackData("action_markdone_" + site.getId())    //markdone
+                                .build());
+                    } else {
+                        buttons.add(InlineKeyboardButton.builder()
+                                .text("✅ Взять в работу")
+                                .callbackData("action_takedone_" + site.getId())  //takedone
+                                .build());
+                    }
+
                 }
 
                 if (!buttons.isEmpty()) {
@@ -312,7 +466,7 @@ public class MaintenanceBot extends TelegramLongPollingBot {
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 sendMessage(chatId, successMessage);
-                getUserRegion(chatId, session);
+                getUserRegion(chatId, session); // Обновляем список через getUserRegion
             } else {
                 sendMessage(chatId, "⚠️ Не удалось обновить объект. Статус: " + response.getStatusCode());
             }
@@ -325,23 +479,84 @@ public class MaintenanceBot extends TelegramLongPollingBot {
     private String prepareUpdateFields(String action, UserSession session, Map<String, Object> updateFields) {
         switch (action) {
             case "take":
+                updateFields.put("done", false);
                 updateFields.put("atWork", true);
+                updateFields.put("noDone", false);
                 updateFields.put("userAtWork", session.getUsername());
                 return "✅ Объект взят в работу";
             case "cancel":
+                updateFields.put("done", false);
                 updateFields.put("atWork", false);
+                updateFields.put("noDone", false);
                 updateFields.put("userAtWork", "");
                 return "🔄 Работа отменена";
             case "done":
                 updateFields.put("done", true);
                 updateFields.put("atWork", false);
                 updateFields.put("noDone", false);
-                updateFields.put("userAtWork", session.getUsername());
+                updateFields.put("userAtWork", "");
                 return "✔️ Объект выполнен";
-            case "markdone":
-                updateFields.put("noDone", false);
+
+            case "takeno":
+                updateFields.put("done", false);
+                updateFields.put("atWork", true);
+                updateFields.put("noDone", true);
                 updateFields.put("userAtWork", session.getUsername());
-                return "✔️ Отмечено как выполнено";
+                return "✅ Объект взят в работу";
+            case "cancelno":
+                updateFields.put("done", false);
+                updateFields.put("atWork", false);
+                updateFields.put("noDone", true);
+                updateFields.put("userAtWork", "");
+                return "🔄 Работа отменена";
+            case "doneno":
+                updateFields.put("done", true);
+                updateFields.put("atWork", false);
+                updateFields.put("noDone", true);
+                updateFields.put("userAtWork", "");
+                return "✔️ Объект выполнен";
+
+
+            case "takenodone":
+                updateFields.put("done", true);
+                updateFields.put("atWork", true);
+                updateFields.put("noDone", true);
+                updateFields.put("userAtWork", session.getUsername());
+                return "✅ Объект взят в работу";
+            case "cancelnodone":
+                updateFields.put("done", true);
+                updateFields.put("atWork", false);
+                updateFields.put("noDone", true);
+                updateFields.put("userAtWork", "");
+                return "🔄 Работа отменена";
+            case "marknodone":
+                updateFields.put("done", true);
+                updateFields.put("atWork", false);
+                updateFields.put("noDone", false);
+                updateFields.put("userAtWork", "");
+                return "✔️ Объект выполнен";
+
+
+            case "takedone":
+                updateFields.put("done", false);
+                updateFields.put("atWork", true);
+                updateFields.put("noDone", true);
+                updateFields.put("userAtWork", session.getUsername());
+                return "✅ Объект взят в работу";
+            case "canceldone":
+                updateFields.put("done", false);
+                updateFields.put("atWork", false);
+                updateFields.put("noDone", true);
+                updateFields.put("userAtWork", "");
+                return "🔄 Работа отменена";
+            case "markdone":
+                updateFields.put("done", false);
+                updateFields.put("atWork", false);
+                updateFields.put("noDone", false);
+                updateFields.put("userAtWork", "");
+                return "✔️ Объект выполнен";
+
+
             default:
                 throw new IllegalArgumentException("Неизвестное действие: " + action);
         }
@@ -362,11 +577,13 @@ public class MaintenanceBot extends TelegramLongPollingBot {
     }
 
     private String getStatusText(WorkSiteDto site) {
-        if (site.getDone()) {
+        if ((!site.getNoDone()) & (site.getDone())) {
             return "✅ Завершено";
         } else if (site.getAtWork()) {
             return "🟡 В работе";
-        } else if (site.getNoDone()) {
+        } else if ((site.getNoDone()) & (!site.getDone())) {
+            return "🔴 Не выполнено";
+        } else if ((site.getNoDone()) & (site.getDone())) {
             return "🔴 Не выполнено";
         }
         return "⚪ Не начато";
@@ -408,6 +625,5 @@ public class MaintenanceBot extends TelegramLongPollingBot {
         public void setRegionId(Long regionId) { this.regionId = regionId; }
         public LocalDateTime getLastActivity() { return lastActivity; }
         public void setLastActivity(LocalDateTime lastActivity) { this.lastActivity = lastActivity; }
-//        userService.findByUsername(principal.getName()).get().getRegiones().getId()
     }
 }
