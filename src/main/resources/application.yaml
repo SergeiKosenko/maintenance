@@ -19,7 +19,7 @@ jwt:
   lifetime: 36000000
 telegram:
   bot:
-    token: 6830607520:AAG0S4AfvruVlzHXkpRuzm45F8RHGOM53Z0
+    token: ****************************************
     username: ServicePlus_Bot
   api:
     base-url: http://37.79.203.13:8188/maintenance
