@@ -5,7 +5,9 @@ angular.module('maintenance').controller('adminController', function ($rootScope
     $scope.userRole = {
         ROLE_ADMIN: "ROLE_ADMIN",
         ROLE_SUPER_ADMIN: "ROLE_SUPER_ADMIN",
-        ROLE_USER: "ROLE_USER"
+        ROLE_USER: "ROLE_USER",
+        ROLE_MANAGER: "ROLE_MANAGER",
+        ROLE_STOREKEEPER: "ROLE_STOREKEEPER"
     };
 
     $scope.getAllRegiones = function () {

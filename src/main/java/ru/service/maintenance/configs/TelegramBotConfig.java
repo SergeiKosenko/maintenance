@@ -11,14 +11,14 @@ import ru.service.maintenance.bot.MaintenanceBot;
 @Configuration
 public class TelegramBotConfig {
 
-    @Bean
-    public TelegramBotsApi telegramBotsApi(
-            @Value("${telegram.bot.token}") String botToken,
-            @Value("${telegram.bot.username}") String botUsername,
-            @Value("${telegram.api.base-url}") String apiBaseUrl) throws TelegramApiException {
-
-        TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-        botsApi.registerBot(new MaintenanceBot(botToken, botUsername, apiBaseUrl));
-        return botsApi;
-    }
+//    @Bean
+//    public TelegramBotsApi telegramBotsApi(
+//            @Value("${telegram.bot.token}") String botToken,
+//            @Value("${telegram.bot.username}") String botUsername,
+//            @Value("${telegram.api.base-url}") String apiBaseUrl) throws TelegramApiException {
+//
+//        TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+//        botsApi.registerBot(new MaintenanceBot(botToken, botUsername, apiBaseUrl));
+//        return botsApi;
+//    }
 }
