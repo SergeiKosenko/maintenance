@@ -33,7 +33,9 @@ create table users_roles
 insert into roles (name) values
                              ('ROLE_USER'),
                              ('ROLE_ADMIN'),
-                             ('ROLE_SUPER_ADMIN');
+                             ('ROLE_SUPER_ADMIN'),
+                             ('ROLE_MANAGER'),
+                             ('ROLE_STOREKEEPER');
 
 insert into users (username, password, last_name, first_name, email, phone, active, region_id) values
     ( 'superAdmin', '$2a$10$A8BL.Fuh0JiHcpapcy0hLeIYT82hyJuwwZhgSPxRABoKP8prowdsq', 'Иванов', 'Иван', 'superadmin@mail.ru', '8 (999)-989-77-22', true, 1 ),
@@ -46,8 +48,8 @@ insert into users_roles (user_id, role_id) values
                              (1, 3),
                              (2, 2),
                              (3, 1),
-                             (4, 2),
-                             (5, 2);
+                             (4, 5),
+                             (5, 1);
 
 
 create table comments
