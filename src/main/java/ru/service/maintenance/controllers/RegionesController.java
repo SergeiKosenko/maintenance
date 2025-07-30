@@ -28,7 +28,8 @@ public class RegionesController {
 
     @GetMapping
     public RegionesDto getUserRegiones(Principal principal) {
-        return regionesConverter.entityToDto(regionesService.FindById(userService.findByUsername(principal.getName()).get().getRegiones().getId()).orElseThrow(() -> new ResourceNotFoundException("Регион с ID не найден")));
+        if (principal == null) { return null; }
+        else return regionesConverter.entityToDto(regionesService.FindById(userService.findByUsername(principal.getName()).get().getRegiones().getId()).orElseThrow(() -> new ResourceNotFoundException("Регион с ID не найден")));
     }
 
     @GetMapping("/{id}")

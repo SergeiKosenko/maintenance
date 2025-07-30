@@ -22,6 +22,9 @@ angular.module('maintenance').controller('adminController', function ($rootScope
         $http.get(contextPath + '/api/v1/regiones')
             .then(function (response) {
                 $scope.userRegiones = response.data;
+                if ($scope.userRegiones == null) {
+                    $location.path('/auth');
+                }
                 $scope.regionId.id = $scope.userRegiones.id;
 
                 $scope.getDistrictByRegionId($scope.regionId.id);
