@@ -1,0 +1,30 @@
+package ru.service.maintenance.core.converters;
+
+import org.springframework.stereotype.Component;
+import ru.service.maintenance.core.dtos.WorkSiteDto;
+import ru.service.maintenance.core.entyties.WorkSite;
+
+@Component
+public class WorkSiteConverter {
+    public WorkSiteDto entityToDto(WorkSite p) {
+        WorkSiteDto workSiteDto = new WorkSiteDto();
+
+        workSiteDto.setId(p.getId());
+        workSiteDto.setStreetId(p.getStreets().getId());
+        workSiteDto.setDistrictTitle(p.getStreets().getDistrict().getTitle());
+        workSiteDto.setDistrictId(p.getStreets().getDistrict().getId());
+        workSiteDto.setRegionId(p.getStreets().getDistrict().getRegiones().getId());
+        workSiteDto.setStreetTitle(p.getStreets().getTitle());
+        workSiteDto.setHouse(p.getHouse());
+        workSiteDto.setFrame(p.getFrame());
+        workSiteDto.setManufactureId(p.getManufactures().getId());
+        workSiteDto.setManufactureTitle(p.getManufactures().getTitle());
+        workSiteDto.setInstallationId(p.getInstallations().getId());
+        workSiteDto.setInstallationTitle(p.getInstallations().getTitle());
+        workSiteDto.setAtWork(p.isAtWork());
+        workSiteDto.setDone(p.isDone());
+        workSiteDto.setNoDone(p.isNoDone());
+        workSiteDto.setUserAtWork(p.getUserAtWork());
+        return workSiteDto;
+    }
+}
