@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class MaintenanceApplication {
+public class MaintenanceCoreApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MaintenanceApplication.class, args);
+		SpringApplication.run(MaintenanceCoreApplication.class, args);
 	}
 
 }

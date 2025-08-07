@@ -3,25 +3,18 @@ package ru.service.maintenance.core.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.service.maintenance.core.bot.MaintenanceBot;
+import ru.service.maintenance.api.WorkSiteDto;
 import ru.service.maintenance.core.converters.DistrictConverter;
 import ru.service.maintenance.core.converters.StreetConverter;
 import ru.service.maintenance.core.converters.WorkSiteConverter;
-import ru.service.maintenance.core.dtos.DistrictDto;
-import ru.service.maintenance.core.dtos.StreetDto;
-import ru.service.maintenance.core.dtos.WorkSiteDto;
-import ru.service.maintenance.core.entyties.District;
-import ru.service.maintenance.core.entyties.Street;
 import ru.service.maintenance.core.entyties.WorkSite;
 import ru.service.maintenance.core.exceptions.InvalidParamsException;
 import ru.service.maintenance.core.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.core.repositories.WorkSiteRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

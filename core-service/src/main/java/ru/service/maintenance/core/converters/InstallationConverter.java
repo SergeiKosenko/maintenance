@@ -1,7 +1,7 @@
 package ru.service.maintenance.core.converters;
 
 import org.springframework.stereotype.Component;
-import ru.service.maintenance.core.dtos.InstallationDto;
+import ru.service.maintenance.api.InstallationDto;
 import ru.service.maintenance.core.entyties.Installation;
 
 @Component

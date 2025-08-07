@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.service.maintenance.api.InstallationDto;
 import ru.service.maintenance.core.converters.InstallationConverter;
-import ru.service.maintenance.core.dtos.InstallationDto;
 import ru.service.maintenance.core.services.InstallationService;
 
 import java.util.List;

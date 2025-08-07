@@ -1,4 +1,4 @@
-package ru.service.maintenance.core.bot;
+package ru.service.maintenance.telegram.bot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.service.maintenance.core.dtos.RegionesDto;
-import ru.service.maintenance.core.dtos.WorkSiteDto;
+import ru.service.maintenance.api.RegionesDto;
+import ru.service.maintenance.api.WorkSiteDto;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;

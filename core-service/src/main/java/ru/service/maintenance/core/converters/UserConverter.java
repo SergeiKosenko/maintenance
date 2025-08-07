@@ -1,13 +1,8 @@
 package ru.service.maintenance.core.converters;
 
 import org.springframework.stereotype.Component;
-import ru.service.maintenance.core.dtos.UsersDto;
-import ru.service.maintenance.core.entyties.Role;
+import ru.service.maintenance.api.UsersDto;
 import ru.service.maintenance.core.entyties.User;
-import ru.service.maintenance.core.repositories.RoleRepository;
-
-import java.util.List;
-import java.util.Set;
 
 @Component
 public class UserConverter {

@@ -3,7 +3,7 @@ package ru.service.maintenance.core.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.service.maintenance.core.dtos.UsersDto;
+import ru.service.maintenance.api.UsersDto;
 import ru.service.maintenance.core.services.UserService;
 
 @RestController

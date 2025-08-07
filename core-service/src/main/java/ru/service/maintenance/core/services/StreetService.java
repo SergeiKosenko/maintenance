@@ -3,7 +3,7 @@ package ru.service.maintenance.core.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.service.maintenance.core.dtos.StreetDto;
+import ru.service.maintenance.api.StreetDto;
 import ru.service.maintenance.core.entyties.Street;
 import ru.service.maintenance.core.exceptions.InvalidParamsException;
 import ru.service.maintenance.core.exceptions.ResourceNotFoundException;

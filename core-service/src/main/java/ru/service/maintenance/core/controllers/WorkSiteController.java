@@ -5,24 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.service.maintenance.core.bot.MaintenanceBot;
+import ru.service.maintenance.api.DistrictDto;
+import ru.service.maintenance.api.StreetDto;
+import ru.service.maintenance.api.WorkSiteDto;
 import ru.service.maintenance.core.converters.DistrictConverter;
 import ru.service.maintenance.core.converters.StreetConverter;
 import ru.service.maintenance.core.converters.WorkSiteConverter;
-import ru.service.maintenance.core.dtos.DistrictDto;
-import ru.service.maintenance.core.dtos.StreetDto;
-import ru.service.maintenance.core.dtos.WorkSiteDto;
 import ru.service.maintenance.core.entyties.District;
 import ru.service.maintenance.core.entyties.Street;
 import ru.service.maintenance.core.entyties.WorkSite;
 import ru.service.maintenance.core.exceptions.ResourceNotFoundException;
 import ru.service.maintenance.core.services.DistrictService;
-import ru.service.maintenance.core.services.RegionesService;
 import ru.service.maintenance.core.services.StreetService;
 import ru.service.maintenance.core.services.WorkSiteService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

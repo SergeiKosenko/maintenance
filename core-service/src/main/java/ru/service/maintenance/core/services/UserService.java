@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.service.maintenance.core.dtos.UsersDto;
+import ru.service.maintenance.api.UsersDto;
 import ru.service.maintenance.core.entyties.Role;
 import ru.service.maintenance.core.entyties.User;
 import ru.service.maintenance.core.exceptions.InvalidParamsException;

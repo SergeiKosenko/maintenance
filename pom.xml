@@ -8,8 +8,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>maintenance</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Project for Spring Boot</description>
 	<modules>
 		<module>core-service</module>
+        <module>bot-service</module>
+		<module>api</module>
 	</modules>
 </project>
