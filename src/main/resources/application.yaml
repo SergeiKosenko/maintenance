@@ -15,7 +15,7 @@
 #      hibernate:
 #        dialect: org.hibernate.dialect.PostgreSQLDialect
 #jwt:
-#  secret: 3w2oiVLKGglkjhf3497g948tyrh0428xczbzgFJgJHL"4gf8734yto3467gjvg>&G*&^F7f3r87gihdsf
+#  secret: ***********h0428xczbzgFJgJHL"4gf8734yto3467gjvg>&G*&^F7f3r87gihdsf
 #  lifetime: 36000000
 #telegram:
 #  bot:
